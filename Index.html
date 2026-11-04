@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Table Tennis Radar</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#141e30;--line:#28364b;--text:#edf3ff;--muted:#9aabc3;--green:#39d98a;--red:#ff647c;--blue:#6ea8fe}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,sans-serif}
+header{padding:22px 16px;background:#101a2b;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:24px}header p{margin:6px 0 0;color:var(--muted)}
+main{max-width:900px;margin:auto;padding:16px}
+.notice{padding:12px;border:1px solid #806b36;background:#302918;border-radius:10px;color:#ffdf91;font-size:13px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px}
+.stat,.panel,.match{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}
+.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:23px;margin-top:5px}
+h2{font-size:18px;margin:22px 0 12px}
+input,select,button{font:inherit;border-radius:8px;padding:11px;border:1px solid var(--line);background:#0d1728;color:var(--text);max-width:100%}
+input,select{width:100%}button{cursor:pointer;background:#223653}
+button.primary{background:#2767d9;border-color:#2767d9}
+button.win{background:#12452f;border-color:#24764f}
+button.loss{background:#501e2a;border-color:#873547}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.match{margin:10px 0}
+.match-top,.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.small{font-size:12px;color:var(--muted)}
+.players{font-size:17px;font-weight:650;margin:14px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.actions button{flex:1}
+details{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.field{margin:10px 0}
+.result{margin-top:12px;padding:12px;background:#0d1728;border-radius:9px;line-height:1.8}
+.good{color:var(--green)}.bad{color:var(--red)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+@media(max-width:480px){.stats{grid-template-columns:repeat(3,1fr)}.stat{padding:10px}.stat strong{font-size:19px}.analysis-grid{grid-template-columns:1fr}.players{font-size:16px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏓 Table Tennis Radar</h1>
+  <p>Partite · H2H · Quote · Registro scommesse</p>
+</header>
+<main>
+  <div class="notice">MODALITÀ DEMO — le partite mostrate sono esempi, non eventi reali. L'API BetsAPI non è ancora collegata.</div>
+  <div class="stats">
+    <div class="stat"><span>Giocate chiuse</span><strong id="total">0</strong></div>
+    <div class="stat"><span>Vittorie</span><strong id="rate">0%</strong></div>
+    <div class="stat"><span>Bilancio</span><strong id="profit">€0.00</strong></div>
+  </div>
+
+  <h2>Partite</h2>
+  <div class="filters">
+    <input id="search" placeholder="Cerca giocatore o torneo">
+    <select id="tournament">
+      <option value="all">Tutti i tornei</option>
+      <option value="TT Cup">TT Cup</option>
+    </select>
+  </div>
+  <div id="matches"></div>
+
+  <h2>Registro scommesse</h2>
+  <div class="panel">
+    <p class="small">Le giocate vengono salvate in questo browser. Inserisci l'importo per calcolare il bilancio.</p>
+    <div id="bets"><p class="small">Nessuna giocata registrata.</p></div>
+    <button id="export" class="primary">Esporta registro CSV</button>
+  </div>
+</main>
+<footer>Table Tennis Radar · Analisi statistiche, non garanzia di risultato.</footer>
+<script>
+const demo=[
+ {id:1,tournament:"TT Cup",time:"Esempio",a:"Giocatore A",b:"Giocatore B",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"},
+ {id:2,tournament:"TT Cup",time:"Esempio",a:"Giocatore C",b:"Giocatore D",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"},
+ {id:3,tournament:"Altro torneo",time:"Esempio",a:"Giocatore E",b:"Giocatore F",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"}
+];
+const $=id=>document.getElementById(id);
+let bets=[];
+try{bets=JSON.parse(localStorage.getItem("ttr-bets")||"[]")}catch(e){bets=[]}
+function save(){localStorage.setItem("ttr-bets",JSON.stringify(bets));renderStats();renderBets()}
+function renderMatches(){
+ const q=$("search").value.toLowerCase(),t=$("tournament").value;
+ const list=demo.filter(m=>(t==="all"||m.tournament===t)&&(m.a+" "+m.b+" "+m.tournament).toLowerCase().includes(q));
+ $("matches").innerHTML=list.length?list.map(m=>`
+ <div class="match">
+ <div class="match-top"><span class="small">${m.tournament}</span><span class="small">${m.time}</span></div>
+ <div class="players">${m.a} <span class="small">vs</span> ${m.b}</div>
+ <div class="actions"><button class="primary" onclick="openMatch(${m.id})">Analizza partita</button></div>
+ <div id="detail-${m.id}"></div>
+ </div>`).join(""):'<p class="small">Nessuna partita corrispondente.</p>';
+}
+function openMatch(id){
+ const m=demo.find(x=>x.id===id),el=$("detail-"+id);
+ if(el.innerHTML){el.innerHTML="";return}
+ el.innerHTML=`
+ <details open><summary>H2H e forma recente</summary>
+ <p class="small">Ultimi scontri diretti: ${m.h2h}</p>
+ <p class="small">${m.a} — partite di oggi: ${m.recentA}</p>
+ <p class="small">${m.b} — partite di oggi: ${m.recentB}</p>
+ <p class="small">I dati reali compariranno dopo il collegamento API.</p>
+ <div class="analysis-grid">
+ <div class="field"><label>Probabilità stimata (%)</label><input id="p-${id}" type="number" min="1" max="99" placeholder="Es. 62"></div>
+ <div class="field"><label>Quota decimale</label><input id="o-${id}" type="number" min="1.01" step="0.01" placeholder="Es. 1.80"></div>
+ <div class="field"><label>Importo puntato (€)</label><input id="s-${id}" type="number" min="0.01" step="0.01" placeholder="Es. 10"></div>
+ </div>
+ <div class="result" id="calc-${id}">Inserisci probabilità e quota per confrontarle.</div>
+ <div class="actions">
+ <button class="win" onclick="record(${id},'Vinta')">VINTA</button>
+ <button class="loss" onclick="record(${id},'Persa')">PERSA</button>
+ </div>
+ </details>`;
+ ["p","o"].forEach(k=>$(`${k}-${id}`).addEventListener("input",()=>calculate(id)));
+}
+function calculate(id){
+ const p=+$(`p-${id}`).value/100,o=+$(`o-${id}`).value;
+ const el=$(`calc-${id}`);
+ if(!(p>0&&p<1&&o>1)){el.textContent="Inserisci una probabilità tra 1 e 99 e una quota maggiore di 1.";return}
+ const implied=100/o,ev=(p*o-1)*100;
+ el.innerHTML=`Probabilità implicita della quota: <b>${implied.toFixed(2)}%</b><br>Valore teorico stimato: <b class="${ev>=0?'good':'bad'}">${ev>=0?'+':''}${ev.toFixed(2)}%</b><br><span class="small">Stima inserita manualmente, non verificata da risultati reali.</span>`;
+}
+function record(id,status){
+ const m=demo.find(x=>x.id===id);
+ const p=+$(`p-${id}`).value,o=+$(`o-${id}`).value,stake=+$(`s-${id}`).value;
+ if(!(p>0&&p<100&&o>1&&stake>0)){alert("Inserisci probabilità, quota e importo validi prima di registrare.");return}
+ bets.unshift({date:new Date().toLocaleDateString("it-IT"),match:m.a+" vs "+m.b,tournament:m.tournament,p,o,stake,status,profit:status==="Vinta"?stake*(o-1):-stake});
+ save();
+}
+function renderStats(){
+ const closed=bets.filter(b=>b.status==="Vinta"||b.status==="Persa");
+ const wins=closed.filter(b=>b.status==="Vinta").length;
+ const profit=closed.reduce((s,b)=>s+b.profit,0);
+ $("total").textContent=closed.length;
+ $("rate").textContent=(closed.length?100*wins/closed.length:0).toFixed(1)+"%";
+ $("profit").textContent=(profit<0?"−":"")+"€"+Math.abs(profit).toFixed(2);
+ $("profit").className=profit>=0?"good":"bad";
+}
+function renderBets(){
+ $("bets").innerHTML=bets.length?bets.map((b,i)=>`
+ <div class="match">
+ <div class="between"><b>${b.match}</b><span class="${b.status==='Vinta'?'good':'bad'}">${b.status}</span></div>
+ <p class="small">${b.date} · Quota ${b.o} · Puntata €${b.stake.toFixed(2)} · Prob. ${b.p}%</p>
+ <div class="between"><b class="${b.profit>=0?'good':'bad'}">${b.profit>=0?'+':'−'}€${Math.abs(b.profit).toFixed(2)}</b><button onclick="removeBet(${i})">Elimina</button></div>
+ </div>`).join(""):'<p class="small">Nessuna giocata registrata.</p>';
+}
+function removeBet(i){if(confirm("Eliminare questa giocata?")){bets.splice(i,1);save()}}
+$("search").addEventListener("input",renderMatches);
+$("tournament").addEventListener("change",renderMatches);
+$("export").addEventListener("click",()=>{
+ const rows=[["Data","Partita","Torneo","Probabilità","Quota","Puntata","Esito","Profitto"],...bets.map(b=>[b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,b.profit.toFixed(2)])];
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="table-tennis-radar.csv";a.click();URL.revokeObjectURL(a.href);
+});
+renderMatches();renderStats();renderBets();
+</script>
+</body>
+</html>
