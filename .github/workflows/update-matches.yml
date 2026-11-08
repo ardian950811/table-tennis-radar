@@ -1,0 +1,52 @@
+
+name: Update Table Tennis Matches
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Download BetsAPI matches
+        env:
+          BETSAPI_TOKEN: ${{ secrets.BETSAPI_TOKEN }}
+        run: |
+          set -e
+          mkdir -p data
+
+          TODAY=$(date -u +%Y%m%d)
+
+          curl -fsS --get \
+            "https://api.b365api.com/v3/events/upcoming" \
+            --data-urlencode "sport_id=92" \
+            --data-urlencode "day=$TODAY" \
+            --data-urlencode "token=$BETSAPI_TOKEN" \
+            -o data/upcoming.json
+
+          curl -fsS --get \
+            "https://api.b365api.com/v3/events/inplay" \
+            --data-urlencode "sport_id=92" \
+            --data-urlencode "token=$BETSAPI_TOKEN" \
+            -o data/inplay.json
+
+          jq -e '.success == 1' data/upcoming.json > /dev/null
+          jq -e '.success == 1' data/inplay.json > /dev/null
+
+      - name: Save match data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/upcoming.json data/inplay.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update table tennis matches"
+            git push
+          fi
+          
