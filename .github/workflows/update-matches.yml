@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: update-table-tennis-matches
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -26,18 +30,23 @@ jobs:
 
           TODAY=$(TZ=Europe/Rome date +%Y%m%d)
 
-          curl -fsS --get \
+          curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/upcoming" \
             --data-urlencode "sport_id=92" \
             --data-urlencode "day=$TODAY" \
             --data-urlencode "page=1" \
             --data-urlencode "token=$BETSAPI_TOKEN" \
-            -o data/upcoming-page-1.json
+            -o data/upcoming-page-0001.json
 
-          jq -e '.success == 1' data/upcoming-page-1.json > /dev/null
+          jq -e '.success == 1' data/upcoming-page-0001.json > /dev/null
 
-          TOTAL=$(jq -r '.pager.total // 0' data/upcoming-page-1.json)
-          PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-1.json)
+          TOTAL=$(jq -r '.pager.total // 0' data/upcoming-page-0001.json)
+          PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-0001.json)
+
+          if [ "$PER_PAGE" -lt 1 ]; then
+            echo "Numero di risultati per pagina non valido"
+            exit 1
+          fi
 
           PAGES=$(( (TOTAL + PER_PAGE - 1) / PER_PAGE ))
 
@@ -45,17 +54,21 @@ jobs:
             PAGES=100
           fi
 
-          for PAGE in $(seq 2 "$PAGES"); do
-            curl -fsS --get \
-              "https://api.b365api.com/v3/events/upcoming" \
-              --data-urlencode "sport_id=92" \
-              --data-urlencode "day=$TODAY" \
-              --data-urlencode "page=$PAGE" \
-              --data-urlencode "token=$BETSAPI_TOKEN" \
-              -o "data/upcoming-page-$PAGE.json"
+          if [ "$PAGES" -gt 1 ]; then
+            for PAGE in $(seq 2 "$PAGES"); do
+              PADDED=$(printf "%04d" "$PAGE")
 
-            jq -e '.success == 1' "data/upcoming-page-$PAGE.json" > /dev/null
-          done
+              curl -fsS --retry 3 --get \
+                "https://api.b365api.com/v3/events/upcoming" \
+                --data-urlencode "sport_id=92" \
+                --data-urlencode "day=$TODAY" \
+                --data-urlencode "page=$PAGE" \
+                --data-urlencode "token=$BETSAPI_TOKEN" \
+                -o "data/upcoming-page-$PADDED.json"
+
+              jq -e '.success == 1' "data/upcoming-page-$PADDED.json" > /dev/null
+            done
+          fi
 
           jq -s '{
             success: 1,
@@ -65,7 +78,7 @@ jobs:
 
           rm data/upcoming-page-*.json
 
-          curl -fsS --get \
+          curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/inplay" \
             --data-urlencode "sport_id=92" \
             --data-urlencode "token=$BETSAPI_TOKEN" \
@@ -73,12 +86,22 @@ jobs:
 
           jq -e '.success == 1' data/inplay.json > /dev/null
 
+          echo "Partite programmate scaricate: $(jq '.results | length' data/upcoming.json)"
+          echo "Partite LIVE scaricate: $(jq '.results | length' data/inplay.json)"
+
       - name: Save match data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data/upcoming.json data/inplay.json
+
           if ! git diff --cached --quiet; then
             git commit -m "Update table tennis matches"
-            git push
+
+            git pull --rebase origin main
+
+            git push origin main
+          else
+            echo "Nessun nuovo dato da salvare"
           fi
