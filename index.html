@@ -10,19 +10,25 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,sans-serif}
 header{padding:22px 16px;background:#101a2b;border-bottom:1px solid var(--line)}
-header h1{margin:0;font-size:24px}header p{margin:6px 0 0;color:var(--muted)}
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;color:var(--muted)}
 main{max-width:900px;margin:auto;padding:16px}
-.notice{padding:12px;border:1px solid #806b36;background:#302918;border-radius:10px;color:#ffdf91;font-size:13px;margin-bottom:16px}
+.notice{padding:12px;border:1px solid #24764f;background:#123326;border-radius:10px;color:#a8f0c9;font-size:13px;margin-bottom:16px}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px}
 .stat,.panel,.match{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px}
-.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:23px;margin-top:5px}
+.stat span{display:block;color:var(--muted);font-size:12px}
+.stat strong{display:block;font-size:23px;margin-top:5px}
 h2{font-size:18px;margin:22px 0 12px}
 input,select,button{font:inherit;border-radius:8px;padding:11px;border:1px solid var(--line);background:#0d1728;color:var(--text);max-width:100%}
-input,select{width:100%}button{cursor:pointer;background:#223653}
+input,select{width:100%}
+button{cursor:pointer;background:#223653}
 button.primary{background:#2767d9;border-color:#2767d9}
 button.win{background:#12452f;border-color:#24764f}
 button.loss{background:#501e2a;border-color:#873547}
 .filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.tabs{display:flex;gap:8px;margin:12px 0}
+.tabs button{flex:1}
+.tabs button.active{background:#2767d9;border-color:#2767d9}
 .match{margin:10px 0}
 .match-top,.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .small{font-size:12px;color:var(--muted)}
@@ -35,6 +41,7 @@ label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 .field{margin:10px 0}
 .result{margin-top:12px;padding:12px;background:#0d1728;border-radius:9px;line-height:1.8}
 .good{color:var(--green)}.bad{color:var(--red)}
+.live{color:var(--red);font-weight:700}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
 @media(max-width:480px){.stats{grid-template-columns:repeat(3,1fr)}.stat{padding:10px}.stat strong{font-size:19px}.analysis-grid{grid-template-columns:1fr}.players{font-size:16px}}
 </style>
@@ -44,8 +51,10 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
   <h1>🏓 Table Tennis Radar</h1>
   <p>Partite · H2H · Quote · Registro scommesse</p>
 </header>
+
 <main>
-  <div class="notice">MODALITÀ DEMO — le partite mostrate sono esempi, non eventi reali. L'API BetsAPI non è ancora collegata.</div>
+  <div class="notice" id="status">Caricamento delle partite BetsAPI...</div>
+
   <div class="stats">
     <div class="stat"><span>Giocate chiuse</span><strong id="total">0</strong></div>
     <div class="stat"><span>Vittorie</span><strong id="rate">0%</strong></div>
@@ -53,14 +62,25 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
   </div>
 
   <h2>Partite</h2>
+
+  <div class="tabs">
+    <button id="upcomingTab" class="active" onclick="setTab('upcoming')">Programmate</button>
+    <button id="liveTab" onclick="setTab('live')">🔴 In diretta</button>
+  </div>
+
   <div class="filters">
     <input id="search" placeholder="Cerca giocatore o torneo">
     <select id="tournament">
       <option value="all">Tutti i tornei</option>
-      <option value="TT Cup">TT Cup</option>
     </select>
   </div>
-  <div id="matches"></div>
+
+  <div class="between">
+    <span class="small" id="matchCount">Partite: 0</span>
+    <button onclick="loadMatches()">Aggiorna</button>
+  </div>
+
+  <div id="matches"><p class="small">Caricamento...</p></div>
 
   <h2>Registro scommesse</h2>
   <div class="panel">
@@ -69,90 +89,398 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
     <button id="export" class="primary">Esporta registro CSV</button>
   </div>
 </main>
+
 <footer>Table Tennis Radar · Analisi statistiche, non garanzia di risultato.</footer>
+
 <script>
-const demo=[
- {id:1,tournament:"TT Cup",time:"Esempio",a:"Giocatore A",b:"Giocatore B",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"},
- {id:2,tournament:"TT Cup",time:"Esempio",a:"Giocatore C",b:"Giocatore D",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"},
- {id:3,tournament:"Altro torneo",time:"Esempio",a:"Giocatore E",b:"Giocatore F",h2h:"Dati non disponibili",recentA:"Dati non disponibili",recentB:"Dati non disponibili"}
-];
-const $=id=>document.getElementById(id);
-let bets=[];
-try{bets=JSON.parse(localStorage.getItem("ttr-bets")||"[]")}catch(e){bets=[]}
-function save(){localStorage.setItem("ttr-bets",JSON.stringify(bets));renderStats();renderBets()}
-function renderMatches(){
- const q=$("search").value.toLowerCase(),t=$("tournament").value;
- const list=demo.filter(m=>(t==="all"||m.tournament===t)&&(m.a+" "+m.b+" "+m.tournament).toLowerCase().includes(q));
- $("matches").innerHTML=list.length?list.map(m=>`
- <div class="match">
- <div class="match-top"><span class="small">${m.tournament}</span><span class="small">${m.time}</span></div>
- <div class="players">${m.a} <span class="small">vs</span> ${m.b}</div>
- <div class="actions"><button class="primary" onclick="openMatch(${m.id})">Analizza partita</button></div>
- <div id="detail-${m.id}"></div>
- </div>`).join(""):'<p class="small">Nessuna partita corrispondente.</p>';
+const $ = id => document.getElementById(id);
+
+let upcoming = [];
+let live = [];
+let activeTab = "upcoming";
+let bets = [];
+
+try {
+  bets = JSON.parse(localStorage.getItem("ttr-bets") || "[]");
+  if (!Array.isArray(bets)) bets = [];
+} catch(e) {
+  bets = [];
 }
-function openMatch(id){
- const m=demo.find(x=>x.id===id),el=$("detail-"+id);
- if(el.innerHTML){el.innerHTML="";return}
- el.innerHTML=`
- <details open><summary>H2H e forma recente</summary>
- <p class="small">Ultimi scontri diretti: ${m.h2h}</p>
- <p class="small">${m.a} — partite di oggi: ${m.recentA}</p>
- <p class="small">${m.b} — partite di oggi: ${m.recentB}</p>
- <p class="small">I dati reali compariranno dopo il collegamento API.</p>
- <div class="analysis-grid">
- <div class="field"><label>Probabilità stimata (%)</label><input id="p-${id}" type="number" min="1" max="99" placeholder="Es. 62"></div>
- <div class="field"><label>Quota decimale</label><input id="o-${id}" type="number" min="1.01" step="0.01" placeholder="Es. 1.80"></div>
- <div class="field"><label>Importo puntato (€)</label><input id="s-${id}" type="number" min="0.01" step="0.01" placeholder="Es. 10"></div>
- </div>
- <div class="result" id="calc-${id}">Inserisci probabilità e quota per confrontarle.</div>
- <div class="actions">
- <button class="win" onclick="record(${id},'Vinta')">VINTA</button>
- <button class="loss" onclick="record(${id},'Persa')">PERSA</button>
- </div>
- </details>`;
- ["p","o"].forEach(k=>$(`${k}-${id}`).addEventListener("input",()=>calculate(id)));
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
 }
-function calculate(id){
- const p=+$(`p-${id}`).value/100,o=+$(`o-${id}`).value;
- const el=$(`calc-${id}`);
- if(!(p>0&&p<1&&o>1)){el.textContent="Inserisci una probabilità tra 1 e 99 e una quota maggiore di 1.";return}
- const implied=100/o,ev=(p*o-1)*100;
- el.innerHTML=`Probabilità implicita della quota: <b>${implied.toFixed(2)}%</b><br>Valore teorico stimato: <b class="${ev>=0?'good':'bad'}">${ev>=0?'+':''}${ev.toFixed(2)}%</b><br><span class="small">Stima inserita manualmente, non verificata da risultati reali.</span>`;
+
+function formatTime(timestamp) {
+  if (!timestamp) return "Orario non disponibile";
+
+  const date = new Date(Number(timestamp) * 1000);
+
+  if (isNaN(date.getTime())) return "Orario non disponibile";
+
+  return date.toLocaleString("it-IT", {
+    timeZone:"Europe/Rome",
+    day:"2-digit",
+    month:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
 }
-function record(id,status){
- const m=demo.find(x=>x.id===id);
- const p=+$(`p-${id}`).value,o=+$(`o-${id}`).value,stake=+$(`s-${id}`).value;
- if(!(p>0&&p<100&&o>1&&stake>0)){alert("Inserisci probabilità, quota e importo validi prima di registrare.");return}
- bets.unshift({date:new Date().toLocaleDateString("it-IT"),match:m.a+" vs "+m.b,tournament:m.tournament,p,o,stake,status,profit:status==="Vinta"?stake*(o-1):-stake});
- save();
+
+function getAllMatches() {
+  return activeTab === "live" ? live : upcoming;
 }
-function renderStats(){
- const closed=bets.filter(b=>b.status==="Vinta"||b.status==="Persa");
- const wins=closed.filter(b=>b.status==="Vinta").length;
- const profit=closed.reduce((s,b)=>s+b.profit,0);
- $("total").textContent=closed.length;
- $("rate").textContent=(closed.length?100*wins/closed.length:0).toFixed(1)+"%";
- $("profit").textContent=(profit<0?"−":"")+"€"+Math.abs(profit).toFixed(2);
- $("profit").className=profit>=0?"good":"bad";
+
+function getMatch(id) {
+  return [...upcoming, ...live].find(m => String(m.id) === String(id));
 }
-function renderBets(){
- $("bets").innerHTML=bets.length?bets.map((b,i)=>`
- <div class="match">
- <div class="between"><b>${b.match}</b><span class="${b.status==='Vinta'?'good':'bad'}">${b.status}</span></div>
- <p class="small">${b.date} · Quota ${b.o} · Puntata €${b.stake.toFixed(2)} · Prob. ${b.p}%</p>
- <div class="between"><b class="${b.profit>=0?'good':'bad'}">${b.profit>=0?'+':'−'}€${Math.abs(b.profit).toFixed(2)}</b><button onclick="removeBet(${i})">Elimina</button></div>
- </div>`).join(""):'<p class="small">Nessuna giocata registrata.</p>';
+
+async function loadMatches() {
+  $("status").textContent = "Caricamento dati BetsAPI...";
+
+  try {
+    const [upResponse, liveResponse] = await Promise.all([
+      fetch("./data/upcoming.json?t=" + Date.now(), {cache:"no-store"}),
+      fetch("./data/inplay.json?t=" + Date.now(), {cache:"no-store"})
+    ]);
+
+    if (!upResponse.ok || !liveResponse.ok) {
+      throw new Error("File delle partite non raggiungibili.");
+    }
+
+    const upData = await upResponse.json();
+    const liveData = await liveResponse.json();
+
+    if (upData.success !== 1 || liveData.success !== 1) {
+      throw new Error("BetsAPI ha restituito una risposta non valida.");
+    }
+
+    upcoming = Array.isArray(upData.results) ? upData.results : [];
+    live = Array.isArray(liveData.results) ? liveData.results : [];
+
+    $("status").textContent =
+      "Collegamento BetsAPI attivo · " +
+      upcoming.length + " partite programmate · " +
+      live.length + " in diretta";
+
+    updateTournaments();
+    renderMatches();
+
+  } catch(error) {
+    $("status").textContent =
+      "Errore nel caricamento: " + error.message +
+      " · Controlla che i file JSON siano presenti nella cartella data.";
+
+    $("matches").innerHTML =
+      '<p class="small">Non riesco a caricare le partite. Riprova con Aggiorna.</p>';
+  }
 }
-function removeBet(i){if(confirm("Eliminare questa giocata?")){bets.splice(i,1);save()}}
-$("search").addEventListener("input",renderMatches);
-$("tournament").addEventListener("change",renderMatches);
-$("export").addEventListener("click",()=>{
- const rows=[["Data","Partita","Torneo","Probabilità","Quota","Puntata","Esito","Profitto"],...bets.map(b=>[b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,b.profit.toFixed(2)])];
- const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download="table-tennis-radar.csv";a.click();URL.revokeObjectURL(a.href);
+
+function setTab(tab) {
+  activeTab = tab;
+
+  $("upcomingTab").classList.toggle("active", tab === "upcoming");
+  $("liveTab").classList.toggle("active", tab === "live");
+
+  $("tournament").value = "all";
+  renderMatches();
+}
+
+function updateTournaments() {
+  const all = [...upcoming, ...live];
+  const names = [...new Set(
+    all.map(m => m.league?.name).filter(Boolean)
+  )].sort();
+
+  const select = $("tournament");
+  const previous = select.value;
+
+  select.innerHTML =
+    '<option value="all">Tutti i tornei</option>' +
+    names.map(name =>
+      `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`
+    ).join("");
+
+  if (names.includes(previous)) select.value = previous;
+}
+
+function renderMatches() {
+  const q = $("search").value.toLowerCase().trim();
+  const tournament = $("tournament").value;
+
+  const list = getAllMatches().filter(m => {
+    const home = m.home?.name || "Giocatore sconosciuto";
+    const away = m.away?.name || "Giocatore sconosciuto";
+    const league = m.league?.name || "Torneo non disponibile";
+
+    const text = (home + " " + away + " " + league).toLowerCase();
+
+    return (tournament === "all" || league === tournament)
+      && text.includes(q);
+  });
+
+  $("matchCount").textContent = "Partite: " + list.length;
+
+  if (!list.length) {
+    $("matches").innerHTML =
+      '<p class="small">Nessuna partita trovata in questa sezione.</p>';
+    return;
+  }
+
+  $("matches").innerHTML = list.map(m => {
+    const id = Number(m.id);
+    const home = escapeHTML(m.home?.name || "Giocatore sconosciuto");
+    const away = escapeHTML(m.away?.name || "Giocatore sconosciuto");
+    const league = escapeHTML(m.league?.name || "Torneo non disponibile");
+    const time = activeTab === "live"
+      ? '<span class="live">● LIVE</span>'
+      : escapeHTML(formatTime(m.time));
+
+    const score = m.ss
+      ? `<div class="small">Risultato: ${escapeHTML(m.ss)}</div>`
+      : "";
+
+    return `
+      <div class="match">
+        <div class="match-top">
+          <span class="small">${league}</span>
+          <span class="small">${time}</span>
+        </div>
+
+        <div class="players">
+          ${home} <span class="small">vs</span> ${away}
+        </div>
+
+        ${score}
+
+        <div class="actions">
+          <button class="primary" onclick="openMatch(${id})">
+            Analizza partita
+          </button>
+        </div>
+
+        <div id="detail-${id}"></div>
+      </div>
+    `;
+  }).join("");
+}
+
+function openMatch(id) {
+  const m = getMatch(id);
+  const el = $("detail-" + id);
+
+  if (!m || !el) return;
+
+  if (el.innerHTML) {
+    el.innerHTML = "";
+    return;
+  }
+
+  const home = escapeHTML(m.home?.name || "Giocatore");
+  const away = escapeHTML(m.away?.name || "Giocatore");
+  const league = escapeHTML(m.league?.name || "Torneo");
+
+  el.innerHTML = `
+    <details open>
+      <summary>Analisi e precedenti</summary>
+
+      <p class="small">
+        <b>${home}</b> contro <b>${away}</b>
+      </p>
+
+      <p class="small">Torneo: ${league}</p>
+
+      <p class="small">
+        H2H: collegamento ai precedenti da completare.
+      </p>
+
+      <p class="small">
+        Forma recente: collegamento alle partite dei giocatori da completare.
+      </p>
+
+      <div class="analysis-grid">
+        <div class="field">
+          <label>Probabilità stimata (%)</label>
+          <input id="p-${id}" type="number" min="1" max="99" placeholder="Es. 62">
+        </div>
+
+        <div class="field">
+          <label>Quota decimale</label>
+          <input id="o-${id}" type="number" min="1.01" step="0.01" placeholder="Es. 1.80">
+        </div>
+
+        <div class="field">
+          <label>Importo puntato (€)</label>
+          <input id="s-${id}" type="number" min="0.01" step="0.01" placeholder="Es. 10">
+        </div>
+      </div>
+
+      <div class="result" id="calc-${id}">
+        Inserisci probabilità e quota per confrontarle.
+      </div>
+
+      <div class="actions">
+        <button class="win" onclick="record(${id},'Vinta')">VINTA</button>
+        <button class="loss" onclick="record(${id},'Persa')">PERSA</button>
+      </div>
+    </details>
+  `;
+
+  ["p","o"].forEach(k => {
+    $(`${k}-${id}`).addEventListener("input", () => calculate(id));
+  });
+}
+
+function calculate(id) {
+  const p = Number($(`p-${id}`).value) / 100;
+  const o = Number($(`o-${id}`).value);
+  const el = $(`calc-${id}`);
+
+  if (!(p > 0 && p < 1 && o > 1)) {
+    el.textContent =
+      "Inserisci una probabilità tra 1 e 99 e una quota maggiore di 1.";
+    return;
+  }
+
+  const implied = 100 / o;
+  const ev = (p * o - 1) * 100;
+
+  el.innerHTML = `
+    Probabilità implicita della quota:
+    <b>${implied.toFixed(2)}%</b><br>
+
+    Valore teorico stimato:
+    <b class="${ev >= 0 ? "good" : "bad"}">
+      ${ev >= 0 ? "+" : ""}${ev.toFixed(2)}%
+    </b><br>
+
+    <span class="small">
+      Calcolo basato sulla probabilità inserita manualmente.
+      Non è una previsione automatica.
+    </span>
+  `;
+}
+
+function record(id, status) {
+  const m = getMatch(id);
+  if (!m) return;
+
+  const p = Number($(`p-${id}`).value);
+  const o = Number($(`o-${id}`).value);
+  const stake = Number($(`s-${id}`).value);
+
+  if (!(p > 0 && p < 100 && o > 1 && stake > 0)) {
+    alert("Inserisci probabilità, quota e importo validi prima di registrare.");
+    return;
+  }
+
+  const home = m.home?.name || "Giocatore";
+  const away = m.away?.name || "Giocatore";
+  const league = m.league?.name || "Torneo";
+
+  bets.unshift({
+    date:new Date().toLocaleDateString("it-IT"),
+    match:home + " vs " + away,
+    tournament:league,
+    p,o,stake,status,
+    profit:status === "Vinta" ? stake * (o - 1) : -stake
+  });
+
+  save();
+}
+
+function save() {
+  localStorage.setItem("ttr-bets", JSON.stringify(bets));
+  renderStats();
+  renderBets();
+}
+
+function renderStats() {
+  const closed = bets.filter(b =>
+    b.status === "Vinta" || b.status === "Persa"
+  );
+
+  const wins = closed.filter(b => b.status === "Vinta").length;
+  const profit = closed.reduce((s,b) => s + Number(b.profit || 0), 0);
+
+  $("total").textContent = closed.length;
+  $("rate").textContent =
+    (closed.length ? 100 * wins / closed.length : 0).toFixed(1) + "%";
+
+  $("profit").textContent =
+    (profit < 0 ? "−" : "") + "€" + Math.abs(profit).toFixed(2);
+
+  $("profit").className = profit >= 0 ? "good" : "bad";
+}
+
+function renderBets() {
+  $("bets").innerHTML = bets.length ? bets.map((b,i) => `
+    <div class="match">
+      <div class="between">
+        <b>${escapeHTML(b.match)}</b>
+        <span class="${b.status === "Vinta" ? "good" : "bad"}">
+          ${escapeHTML(b.status)}
+        </span>
+      </div>
+
+      <p class="small">
+        ${escapeHTML(b.date)} · ${escapeHTML(b.tournament)}
+        · Quota ${Number(b.o).toFixed(2)}
+        · Puntata €${Number(b.stake).toFixed(2)}
+        · Prob. ${Number(b.p)}%
+      </p>
+
+      <div class="between">
+        <b class="${b.profit >= 0 ? "good" : "bad"}">
+          ${b.profit >= 0 ? "+" : "−"}€${Math.abs(b.profit).toFixed(2)}
+        </b>
+        <button onclick="removeBet(${i})">Elimina</button>
+      </div>
+    </div>
+  `).join("") : '<p class="small">Nessuna giocata registrata.</p>';
+}
+
+function removeBet(i) {
+  if (confirm("Eliminare questa giocata?")) {
+    bets.splice(i,1);
+    save();
+  }
+}
+
+$("search").addEventListener("input", renderMatches);
+$("tournament").addEventListener("change", renderMatches);
+
+$("export").addEventListener("click", () => {
+  const rows = [
+    ["Data","Partita","Torneo","Probabilità","Quota","Puntata","Esito","Profitto"],
+    ...bets.map(b => [
+      b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,
+      Number(b.profit).toFixed(2)
+    ])
+  ];
+
+  const csv = rows.map(r =>
+    r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(";")
+  ).join("\r\n");
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(
+    new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"})
+  );
+  a.download = "table-tennis-radar.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
 });
-renderMatches();renderStats();renderBets();
+
+renderStats();
+renderBets();
+loadMatches();
 </script>
 </body>
 </html>
