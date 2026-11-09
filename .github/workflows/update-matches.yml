@@ -3,6 +3,8 @@ name: Update Table Tennis Matches
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
 
 permissions:
   contents: write
@@ -22,14 +24,46 @@ jobs:
           set -e
           mkdir -p data
 
-          TODAY=$(date -u +%Y%m%d)
+          TODAY=$(TZ=Europe/Rome date +%Y%m%d)
 
           curl -fsS --get \
             "https://api.b365api.com/v3/events/upcoming" \
             --data-urlencode "sport_id=92" \
             --data-urlencode "day=$TODAY" \
+            --data-urlencode "page=1" \
             --data-urlencode "token=$BETSAPI_TOKEN" \
-            -o data/upcoming.json
+            -o data/upcoming-page-1.json
+
+          jq -e '.success == 1' data/upcoming-page-1.json > /dev/null
+
+          TOTAL=$(jq -r '.pager.total // 0' data/upcoming-page-1.json)
+          PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-1.json)
+
+          PAGES=$(( (TOTAL + PER_PAGE - 1) / PER_PAGE ))
+
+          if [ "$PAGES" -gt 100 ]; then
+            PAGES=100
+          fi
+
+          for PAGE in $(seq 2 "$PAGES"); do
+            curl -fsS --get \
+              "https://api.b365api.com/v3/events/upcoming" \
+              --data-urlencode "sport_id=92" \
+              --data-urlencode "day=$TODAY" \
+              --data-urlencode "page=$PAGE" \
+              --data-urlencode "token=$BETSAPI_TOKEN" \
+              -o "data/upcoming-page-$PAGE.json"
+
+            jq -e '.success == 1' "data/upcoming-page-$PAGE.json" > /dev/null
+          done
+
+          jq -s '{
+            success: 1,
+            pager: .[0].pager,
+            results: [ .[] | .results[] ]
+          }' data/upcoming-page-*.json > data/upcoming.json
+
+          rm data/upcoming-page-*.json
 
           curl -fsS --get \
             "https://api.b365api.com/v3/events/inplay" \
@@ -37,7 +71,6 @@ jobs:
             --data-urlencode "token=$BETSAPI_TOKEN" \
             -o data/inplay.json
 
-          jq -e '.success == 1' data/upcoming.json > /dev/null
           jq -e '.success == 1' data/inplay.json > /dev/null
 
       - name: Save match data
@@ -49,4 +82,3 @@ jobs:
             git commit -m "Update table tennis matches"
             git push
           fi
-          
