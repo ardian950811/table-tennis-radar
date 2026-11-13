@@ -116,7 +116,7 @@ jobs:
             fi
 
             if [ "$COUNT" -ge "$MAX_HISTORY_PER_RUN" ]; then
-              echo "History limit reached for this run"
+              echo "History limit reached"
               break
             fi
 
@@ -150,27 +150,40 @@ jobs:
           echo "New histories downloaded: $COUNT"
           echo "Total history files: $(find data/history -maxdepth 1 -name '*.json' | wc -l)"
 
-      - name: Save match data
+      - name: Save match data safely
         run: |
           set -e
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/upcoming.json data/inplay.json data/history/
+          mkdir -p /tmp/ttr-output/history
 
-          if git diff --cached --quiet; then
-            echo "No new data to save"
-            exit 0
-          fi
-
-          git commit -m "Update table tennis matches"
+          cp data/upcoming.json /tmp/ttr-output/upcoming.json
+          cp data/inplay.json /tmp/ttr-output/inplay.json
+          cp -a data/history/. /tmp/ttr-output/history/
 
           for ATTEMPT in 1 2 3 4 5; do
             echo "GitHub update attempt: $ATTEMPT"
 
             git fetch origin main
-            git rebase origin/main
+
+            git reset --hard origin/main
+
+            mkdir -p data/history
+
+            cp /tmp/ttr-output/upcoming.json data/upcoming.json
+            cp /tmp/ttr-output/inplay.json data/inplay.json
+            cp -a /tmp/ttr-output/history/. data/history/
+
+            git add data/upcoming.json data/inplay.json data/history/
+
+            if git diff --cached --quiet; then
+              echo "No new data to save"
+              exit 0
+            fi
+
+            git commit -m "Update table tennis matches"
 
             if git push origin HEAD:main; then
               echo "Data updated successfully"
