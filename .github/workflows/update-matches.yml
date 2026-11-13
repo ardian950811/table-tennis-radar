@@ -28,7 +28,7 @@ jobs:
           BETSAPI_TOKEN: ${{ secrets.BETSAPI_TOKEN }}
         run: |
           set -e
-          mkdir -p data
+          mkdir -p data/history
 
           TODAY=$(TZ=Europe/Rome date +%Y%m%d)
 
@@ -46,7 +46,7 @@ jobs:
           PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-0001.json)
 
           if [ "$PER_PAGE" -lt 1 ]; then
-            echo "Numero di risultati per pagina non valido"
+            echo "Invalid page size"
             exit 1
           fi
 
@@ -88,8 +88,67 @@ jobs:
 
           jq -e '.success == 1' data/inplay.json > /dev/null
 
-          echo "Partite programmate scaricate: $(jq '.results | length' data/upcoming.json)"
-          echo "Partite LIVE scaricate: $(jq '.results | length' data/inplay.json)"
+          echo "Scheduled matches: $(jq '.results | length' data/upcoming.json)"
+          echo "LIVE matches: $(jq '.results | length' data/inplay.json)"
+
+      - name: Download match histories
+        env:
+          BETSAPI_TOKEN: ${{ secrets.BETSAPI_TOKEN }}
+        run: |
+          set -e
+          mkdir -p data/history
+
+          COUNT=0
+          MAX_HISTORY_PER_RUN=100
+
+          jq -r -s '
+            [.[].results[]? | .id | tostring]
+            | unique[]
+          ' data/upcoming.json data/inplay.json > /tmp/event-ids.txt
+
+          while read -r EVENT_ID; do
+            [ -n "$EVENT_ID" ] || continue
+
+            HISTORY_FILE="data/history/${EVENT_ID}.json"
+
+            if [ -f "$HISTORY_FILE" ] && jq -e '.success == 1' "$HISTORY_FILE" > /dev/null 2>&1; then
+              continue
+            fi
+
+            if [ "$COUNT" -ge "$MAX_HISTORY_PER_RUN" ]; then
+              echo "History limit reached for this run"
+              break
+            fi
+
+            echo "Downloading history for event $EVENT_ID"
+
+            TEMP_FILE="${HISTORY_FILE}.tmp"
+
+            if curl -fsS --retry 2 --get \
+              "https://api.b365api.com/v1/event/history" \
+              --data-urlencode "event_id=$EVENT_ID" \
+              --data-urlencode "qty=20" \
+              --data-urlencode "token=$BETSAPI_TOKEN" \
+              -o "$TEMP_FILE"; then
+
+              if jq -e '.success == 1 and (.results | type == "object")' "$TEMP_FILE" > /dev/null; then
+                mv "$TEMP_FILE" "$HISTORY_FILE"
+                COUNT=$((COUNT + 1))
+              else
+                echo "Invalid history response for event $EVENT_ID"
+                rm -f "$TEMP_FILE"
+              fi
+            else
+              echo "History request failed for event $EVENT_ID"
+              rm -f "$TEMP_FILE"
+            fi
+
+            sleep 0.2
+
+          done < /tmp/event-ids.txt
+
+          echo "New histories downloaded: $COUNT"
+          echo "Total history files: $(find data/history -maxdepth 1 -name '*.json' | wc -l)"
 
       - name: Save match data
         run: |
@@ -98,29 +157,29 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/upcoming.json data/inplay.json
+          git add data/upcoming.json data/inplay.json data/history/
 
           if git diff --cached --quiet; then
-            echo "Nessun nuovo dato da salvare"
+            echo "No new data to save"
             exit 0
           fi
 
           git commit -m "Update table tennis matches"
 
           for ATTEMPT in 1 2 3 4 5; do
-            echo "Tentativo di aggiornamento GitHub: $ATTEMPT"
+            echo "GitHub update attempt: $ATTEMPT"
 
             git fetch origin main
             git rebase origin/main
 
             if git push origin HEAD:main; then
-              echo "Dati aggiornati correttamente!"
+              echo "Data updated successfully"
               exit 0
             fi
 
-            echo "Caricamento rifiutato, nuovo tentativo..."
+            echo "Push rejected, retrying..."
             sleep 3
           done
 
-          echo "Impossibile aggiornare il repository dopo 5 tentativi"
+          echo "Unable to update repository after 5 attempts"
           exit 1
