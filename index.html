@@ -6,7 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Table Tennis Radar</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1220;--panel:#141e30;--line:#28364b;--text:#edf3ff;--muted:#9aabc3;--green:#39d98a;--red:#ff647c;--blue:#6ea8fe}
+:root{
+  color-scheme:dark;
+  --bg:#0b1220;
+  --panel:#141e30;
+  --line:#28364b;
+  --text:#edf3ff;
+  --muted:#9aabc3;
+  --green:#39d98a;
+  --red:#ff647c;
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,sans-serif}
 header{padding:22px 16px;background:#101a2b;border-bottom:1px solid var(--line)}
@@ -40,54 +49,64 @@ details{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
 label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 .field{margin:10px 0}
 .result{margin-top:12px;padding:12px;background:#0d1728;border-radius:9px;line-height:1.8}
-.good{color:var(--green)}.bad{color:var(--red)}
+.good{color:var(--green)}
+.bad{color:var(--red)}
 .live{color:var(--red);font-weight:700}
+.history-box{margin:12px 0;padding:12px;background:#0d1728;border:1px solid var(--line);border-radius:10px}
+.history-box h3{font-size:15px;margin:0 0 10px}
+.history-row{padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.history-row:last-child{border-bottom:0}
+.history-score{font-weight:bold}
+.probability{font-size:21px;font-weight:bold;margin:8px 0}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
-@media(max-width:480px){.stats{grid-template-columns:repeat(3,1fr)}.stat{padding:10px}.stat strong{font-size:19px}.analysis-grid{grid-template-columns:1fr}.players{font-size:16px}}
+@media(max-width:480px){
+.stats{grid-template-columns:repeat(3,1fr)}
+.stat{padding:10px}
+.stat strong{font-size:19px}
+.analysis-grid{grid-template-columns:1fr}
+.players{font-size:16px}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>🏓 Table Tennis Radar</h1>
-  <p>Partite · H2H · Quote · Registro scommesse</p>
+<h1>🏓 Table Tennis Radar</h1>
+<p>Partite · H2H · Forma recente · Quote · Registro scommesse</p>
 </header>
 
 <main>
-  <div class="notice" id="status">Caricamento delle partite BetsAPI...</div>
+<div class="notice" id="status">Caricamento delle partite BetsAPI...</div>
 
-  <div class="stats">
-    <div class="stat"><span>Giocate chiuse</span><strong id="total">0</strong></div>
-    <div class="stat"><span>Vittorie</span><strong id="rate">0%</strong></div>
-    <div class="stat"><span>Bilancio</span><strong id="profit">€0.00</strong></div>
-  </div>
+<div class="stats">
+<div class="stat"><span>Giocate chiuse</span><strong id="total">0</strong></div>
+<div class="stat"><span>Vittorie</span><strong id="rate">0%</strong></div>
+<div class="stat"><span>Bilancio</span><strong id="profit">€0.00</strong></div>
+</div>
 
-  <h2>Partite</h2>
+<h2>Partite</h2>
+<div class="tabs">
+<button id="upcomingTab" class="active" onclick="setTab('upcoming')">Programmate</button>
+<button id="liveTab" onclick="setTab('live')">🔴 In diretta</button>
+</div>
 
-  <div class="tabs">
-    <button id="upcomingTab" class="active" onclick="setTab('upcoming')">Programmate</button>
-    <button id="liveTab" onclick="setTab('live')">🔴 In diretta</button>
-  </div>
+<div class="filters">
+<input id="search" placeholder="Cerca giocatore o torneo">
+<select id="tournament"><option value="all">Tutti i tornei</option></select>
+</div>
 
-  <div class="filters">
-    <input id="search" placeholder="Cerca giocatore o torneo">
-    <select id="tournament">
-      <option value="all">Tutti i tornei</option>
-    </select>
-  </div>
+<div class="between">
+<span class="small" id="matchCount">Partite: 0</span>
+<button onclick="loadMatches()">Aggiorna</button>
+</div>
 
-  <div class="between">
-    <span class="small" id="matchCount">Partite: 0</span>
-    <button onclick="loadMatches()">Aggiorna</button>
-  </div>
+<div id="matches"><p class="small">Caricamento...</p></div>
 
-  <div id="matches"><p class="small">Caricamento...</p></div>
-
-  <h2>Registro scommesse</h2>
-  <div class="panel">
-    <p class="small">Le giocate vengono salvate in questo browser. Inserisci l'importo per calcolare il bilancio.</p>
-    <div id="bets"><p class="small">Nessuna giocata registrata.</p></div>
-    <button id="export" class="primary">Esporta registro CSV</button>
-  </div>
+<h2>Registro scommesse</h2>
+<div class="panel">
+<p class="small">Le giocate vengono salvate in questo browser.</p>
+<div id="bets"><p class="small">Nessuna giocata registrata.</p></div>
+<button id="export" class="primary">Esporta registro CSV</button>
+</div>
 </main>
 
 <footer>Table Tennis Radar · Analisi statistiche, non garanzia di risultato.</footer>
@@ -99,6 +118,7 @@ let upcoming = [];
 let live = [];
 let activeTab = "upcoming";
 let bets = [];
+const historyCache = {};
 
 try {
   bets = JSON.parse(localStorage.getItem("ttr-bets") || "[]");
@@ -109,27 +129,17 @@ try {
 
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   })[c]);
 }
 
 function formatTime(timestamp) {
   if (!timestamp) return "Orario non disponibile";
-
   const date = new Date(Number(timestamp) * 1000);
-
   if (isNaN(date.getTime())) return "Orario non disponibile";
-
   return date.toLocaleString("it-IT", {
-    timeZone:"Europe/Rome",
-    day:"2-digit",
-    month:"2-digit",
-    hour:"2-digit",
-    minute:"2-digit"
+    timeZone:"Europe/Rome",day:"2-digit",month:"2-digit",
+    hour:"2-digit",minute:"2-digit"
   });
 }
 
@@ -138,75 +148,49 @@ function getAllMatches() {
 }
 
 function getMatch(id) {
-  return [...upcoming, ...live].find(m => String(m.id) === String(id));
+  return [...upcoming,...live].find(m => String(m.id) === String(id));
 }
 
 async function loadMatches() {
   $("status").textContent = "Caricamento dati BetsAPI...";
-
   try {
-    const [upResponse, liveResponse] = await Promise.all([
-      fetch("./data/upcoming.json?t=" + Date.now(), {cache:"no-store"}),
-      fetch("./data/inplay.json?t=" + Date.now(), {cache:"no-store"})
+    const [upResponse,liveResponse] = await Promise.all([
+      fetch("./data/upcoming.json?t="+Date.now(),{cache:"no-store"}),
+      fetch("./data/inplay.json?t="+Date.now(),{cache:"no-store"})
     ]);
 
-    if (!upResponse.ok || !liveResponse.ok) {
-      throw new Error("File delle partite non raggiungibili.");
-    }
+    if (!upResponse.ok || !liveResponse.ok) throw new Error("File delle partite non raggiungibili.");
 
     const upData = await upResponse.json();
     const liveData = await liveResponse.json();
 
-    if (upData.success !== 1 || liveData.success !== 1) {
-      throw new Error("BetsAPI ha restituito una risposta non valida.");
-    }
+    if (upData.success !== 1 || liveData.success !== 1) throw new Error("Risposta BetsAPI non valida.");
 
     upcoming = Array.isArray(upData.results) ? upData.results : [];
     live = Array.isArray(liveData.results) ? liveData.results : [];
 
-    $("status").textContent =
-      "Collegamento BetsAPI attivo · " +
-      upcoming.length + " partite programmate · " +
-      live.length + " in diretta";
-
+    $("status").textContent = "BetsAPI attivo · "+upcoming.length+" programmate · "+live.length+" LIVE";
     updateTournaments();
     renderMatches();
-
   } catch(error) {
-    $("status").textContent =
-      "Errore nel caricamento: " + error.message +
-      " · Controlla che i file JSON siano presenti nella cartella data.";
-
-    $("matches").innerHTML =
-      '<p class="small">Non riesco a caricare le partite. Riprova con Aggiorna.</p>';
+    $("status").textContent = "Errore: "+error.message;
+    $("matches").innerHTML = '<p class="small">Non riesco a caricare le partite. Riprova.</p>';
   }
 }
 
 function setTab(tab) {
   activeTab = tab;
-
-  $("upcomingTab").classList.toggle("active", tab === "upcoming");
-  $("liveTab").classList.toggle("active", tab === "live");
-
+  $("upcomingTab").classList.toggle("active",tab==="upcoming");
+  $("liveTab").classList.toggle("active",tab==="live");
   $("tournament").value = "all";
   renderMatches();
 }
 
 function updateTournaments() {
-  const all = [...upcoming, ...live];
-  const names = [...new Set(
-    all.map(m => m.league?.name).filter(Boolean)
-  )].sort();
-
+  const names = [...new Set([...upcoming,...live].map(m=>m.league?.name).filter(Boolean))].sort();
   const select = $("tournament");
   const previous = select.value;
-
-  select.innerHTML =
-    '<option value="all">Tutti i tornei</option>' +
-    names.map(name =>
-      `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`
-    ).join("");
-
+  select.innerHTML = '<option value="all">Tutti i tornei</option>'+names.map(name=>`<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`).join("");
   if (names.includes(previous)) select.value = previous;
 }
 
@@ -214,266 +198,334 @@ function renderMatches() {
   const q = $("search").value.toLowerCase().trim();
   const tournament = $("tournament").value;
 
-  const list = getAllMatches().filter(m => {
+  const list = getAllMatches().filter(m=>{
     const home = m.home?.name || "Giocatore sconosciuto";
     const away = m.away?.name || "Giocatore sconosciuto";
     const league = m.league?.name || "Torneo non disponibile";
-
-    const text = (home + " " + away + " " + league).toLowerCase();
-
-    return (tournament === "all" || league === tournament)
-      && text.includes(q);
+    return (tournament==="all" || league===tournament) &&
+      (home+" "+away+" "+league).toLowerCase().includes(q);
   });
 
-  $("matchCount").textContent = "Partite: " + list.length;
+  $("matchCount").textContent = "Partite: "+list.length;
 
   if (!list.length) {
-    $("matches").innerHTML =
-      '<p class="small">Nessuna partita trovata in questa sezione.</p>';
+    $("matches").innerHTML = '<p class="small">Nessuna partita trovata.</p>';
     return;
   }
 
-  $("matches").innerHTML = list.map(m => {
-    const id = Number(m.id);
+  $("matches").innerHTML = list.map(m=>{
+    const id = escapeHTML(m.id);
     const home = escapeHTML(m.home?.name || "Giocatore sconosciuto");
     const away = escapeHTML(m.away?.name || "Giocatore sconosciuto");
     const league = escapeHTML(m.league?.name || "Torneo non disponibile");
-    const time = activeTab === "live"
-      ? '<span class="live">● LIVE</span>'
-      : escapeHTML(formatTime(m.time));
-
-    const score = m.ss
-      ? `<div class="small">Risultato: ${escapeHTML(m.ss)}</div>`
-      : "";
+    const time = activeTab==="live" ? '<span class="live">● LIVE</span>' : escapeHTML(formatTime(m.time));
+    const score = m.ss ? `<div class="small">Risultato: ${escapeHTML(m.ss)}</div>` : "";
 
     return `
-      <div class="match">
-        <div class="match-top">
-          <span class="small">${league}</span>
-          <span class="small">${time}</span>
-        </div>
-
-        <div class="players">
-          ${home} <span class="small">vs</span> ${away}
-        </div>
-
-        ${score}
-
-        <div class="actions">
-          <button class="primary" onclick="openMatch(${id})">
-            Analizza partita
-          </button>
-        </div>
-
-        <div id="detail-${id}"></div>
+    <div class="match">
+      <div class="match-top"><span class="small">${league}</span><span class="small">${time}</span></div>
+      <div class="players">${home} <span class="small">vs</span> ${away}</div>
+      ${score}
+      <div class="actions">
+        <button class="primary" onclick="openMatch('${id}')">Analizza partita</button>
       </div>
-    `;
+      <div id="detail-${id}"></div>
+    </div>`;
   }).join("");
 }
 
-function openMatch(id) {
-  const m = getMatch(id);
-  const el = $("detail-" + id);
+async function getHistory(id) {
+  if (historyCache[id]) return historyCache[id];
 
-  if (!m || !el) return;
+  const response = await fetch("./data/history/"+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
+  if (response.status===404) return null;
+  if (!response.ok) throw new Error("Errore nel caricamento dello storico.");
 
-  if (el.innerHTML) {
-    el.innerHTML = "";
-    return;
-  }
+  const data = await response.json();
+  if (data.success!==1 || !data.results) throw new Error("Storico non valido.");
 
-  const home = escapeHTML(m.home?.name || "Giocatore");
-  const away = escapeHTML(m.away?.name || "Giocatore");
-  const league = escapeHTML(m.league?.name || "Torneo");
+  historyCache[id] = data.results;
+  return data.results;
+}
 
-  el.innerHTML = `
-    <details open>
-      <summary>Analisi e precedenti</summary>
+function normalizeName(name) {
+  return String(name||"").trim().toLowerCase().replace(/\s+/g," ");
+}
 
-      <p class="small">
-        <b>${home}</b> contro <b>${away}</b>
-      </p>
+function getScoreWinner(match) {
+  const score = String(match.ss||"").trim();
+  const parts = score.match(/^(\d+)\s*[-:]\s*(\d+)$/);
+  if (!parts) return null;
+  const a = Number(parts[1]), b = Number(parts[2]);
+  if (a===b) return null;
+  return a>b ? "home" : "away";
+}
 
-      <p class="small">Torneo: ${league}</p>
+function playerResult(match,playerName) {
+  const target = normalizeName(playerName);
+  const homeName = normalizeName(match.home?.name);
+  const awayName = normalizeName(match.away?.name);
+  const side = homeName===target ? "home" : awayName===target ? "away" : null;
+  if (!side) return null;
+  const winner = getScoreWinner(match);
+  if (!winner) return null;
+  return winner===side ? "win" : "loss";
+}
 
-      <p class="small">
-        H2H: collegamento ai precedenti da completare.
-      </p>
-
-      <p class="small">
-        Forma recente: collegamento alle partite dei giocatori da completare.
-      </p>
-
-      <div class="analysis-grid">
-        <div class="field">
-          <label>Probabilità stimata (%)</label>
-          <input id="p-${id}" type="number" min="1" max="99" placeholder="Es. 62">
-        </div>
-
-        <div class="field">
-          <label>Quota decimale</label>
-          <input id="o-${id}" type="number" min="1.01" step="0.01" placeholder="Es. 1.80">
-        </div>
-
-        <div class="field">
-          <label>Importo puntato (€)</label>
-          <input id="s-${id}" type="number" min="0.01" step="0.01" placeholder="Es. 10">
-        </div>
-      </div>
-
-      <div class="result" id="calc-${id}">
-        Inserisci probabilità e quota per confrontarle.
-      </div>
-
-      <div class="actions">
-        <button class="win" onclick="record(${id},'Vinta')">VINTA</button>
-        <button class="loss" onclick="record(${id},'Persa')">PERSA</button>
-      </div>
-    </details>
-  `;
-
-  ["p","o"].forEach(k => {
-    $(`${k}-${id}`).addEventListener("input", () => calculate(id));
+function calculateRecord(matches,playerName) {
+  let wins=0,losses=0;
+  matches.forEach(match=>{
+    const result=playerResult(match,playerName);
+    if(result==="win") wins++;
+    if(result==="loss") losses++;
   });
+  return {wins,losses,total:wins+losses,percentage:wins+losses?wins/(wins+losses)*100:null};
+}
+
+function showRecord(record) {
+  return record.total ? `${record.wins} vittorie · ${record.losses} sconfitte` : "Risultati non disponibili";
+}
+
+function renderHistoryList(matches,playerName,h2h) {
+  if (!Array.isArray(matches)||!matches.length) return '<p class="small">Nessuna partita precedente disponibile.</p>';
+
+  return matches.slice(0,20).map(match=>{
+    const home=escapeHTML(match.home?.name||"?");
+    const away=escapeHTML(match.away?.name||"?");
+    const score=escapeHTML(match.ss||"Risultato non disponibile");
+    const date=escapeHTML(formatTime(match.time));
+    const result=h2h?null:playerResult(match,playerName);
+
+    let resultLabel="";
+    if(result==="win") resultLabel='<span class="good"> · VINTA</span>';
+    else if(result==="loss") resultLabel='<span class="bad"> · PERSA</span>';
+
+    return `<div class="history-row">
+      <div>${home} <span class="small">vs</span> ${away}</div>
+      <div class="between"><span class="small">${date}</span><span class="history-score">${score}</span></div>
+      ${resultLabel}
+    </div>`;
+  }).join("");
+}
+
+function estimateProbability(homeRecord,awayRecord,h2h) {
+  const homeRate=homeRecord.total?homeRecord.wins/homeRecord.total:null;
+  const awayRate=awayRecord.total?awayRecord.wins/awayRecord.total:null;
+
+  const h2hHome=h2h.filter(m=>playerResult(m,currentPlayers.home)==="win").length;
+  const h2hAway=h2h.filter(m=>playerResult(m,currentPlayers.away)==="win").length;
+  const h2hTotal=h2hHome+h2hAway;
+
+  let values=[],weights=[];
+  if(homeRate!==null){values.push(homeRate);weights.push(0.4);}
+  if(awayRate!==null){values.push(1-awayRate);weights.push(0.4);}
+  if(h2hTotal>0){values.push(h2hHome/h2hTotal);weights.push(0.2);}
+  if(!values.length)return null;
+
+  const totalWeight=weights.reduce((a,b)=>a+b,0);
+  const probability=values.reduce((sum,value,i)=>sum+value*weights[i],0)/totalWeight;
+  return Math.max(1,Math.min(99,probability*100));
+}
+
+let currentPlayers={home:"",away:""};
+
+async function openMatch(id) {
+  const m=getMatch(id);
+  const el=$("detail-"+id);
+  if(!m||!el)return;
+
+  if(el.innerHTML){el.innerHTML="";return;}
+
+  const home=m.home?.name||"Giocatore";
+  const away=m.away?.name||"Giocatore";
+  const league=m.league?.name||"Torneo";
+  currentPlayers={home,away};
+
+  el.innerHTML=`
+  <details open>
+    <summary>Analisi e precedenti</summary>
+    <p class="small"><b>${escapeHTML(home)}</b> contro <b>${escapeHTML(away)}</b></p>
+    <p class="small">Torneo: ${escapeHTML(league)}</p>
+    <div id="history-${id}"><p class="small">⏳ Caricamento H2H e forma recente...</p></div>
+
+    <h3>Calcolo quota e probabilità</h3>
+    <div class="analysis-grid">
+      <div class="field"><label>Probabilità stimata (%)</label><input id="p-${id}" type="number" min="1" max="99" placeholder="Es. 62"></div>
+      <div class="field"><label>Quota decimale</label><input id="o-${id}" type="number" min="1.01" step="0.01" placeholder="Es. 1.80"></div>
+      <div class="field"><label>Importo puntato (€)</label><input id="s-${id}" type="number" min="0.01" step="0.01" placeholder="Es. 10"></div>
+    </div>
+
+    <div class="result" id="calc-${id}">Inserisci probabilità e quota per confrontarle.</div>
+    <div class="actions">
+      <button class="win" onclick="record('${id}','Vinta')">VINTA</button>
+      <button class="loss" onclick="record('${id}','Persa')">PERSA</button>
+    </div>
+  </details>`;
+
+  ["p","o"].forEach(k=>$(`${k}-${id}`).addEventListener("input",()=>calculate(id)));
+  await loadMatchAnalysis(id,home,away);
+}
+
+async function loadMatchAnalysis(id,home,away) {
+  const container=$("history-"+id);
+
+  try {
+    const history=await getHistory(id);
+    if(!history){
+      container.innerHTML='<div class="history-box"><p class="small">Lo storico di questa partita non è ancora disponibile. Il workflow deve prima scaricarlo da BetsAPI.</p></div>';
+      return;
+    }
+
+    const h2h=Array.isArray(history.h2h)?history.h2h:[];
+    const homeMatches=Array.isArray(history.home)?history.home:[];
+    const awayMatches=Array.isArray(history.away)?history.away:[];
+
+    const homeRecord=calculateRecord(homeMatches,home);
+    const awayRecord=calculateRecord(awayMatches,away);
+    const h2hHome=calculateRecord(h2h,home);
+    const h2hAway=calculateRecord(h2h,away);
+    const probability=estimateProbability(homeRecord,awayRecord,h2h);
+
+    container.innerHTML=`
+    <div class="history-box">
+      <h3>🤝 Scontri diretti H2H</h3>
+      <p class="small">${escapeHTML(home)}: <b>${h2hHome.wins}</b> vittorie</p>
+      <p class="small">${escapeHTML(away)}: <b>${h2hAway.wins}</b> vittorie</p>
+      <p class="small">Incontri trovati: ${h2h.length}</p>
+      ${renderHistoryList(h2h,null,true)}
+    </div>
+
+    <div class="history-box">
+      <h3>📊 Forma recente: ${escapeHTML(home)}</h3>
+      <p class="small">${showRecord(homeRecord)}</p>
+      ${renderHistoryList(homeMatches,home,false)}
+    </div>
+
+    <div class="history-box">
+      <h3>📊 Forma recente: ${escapeHTML(away)}</h3>
+      <p class="small">${showRecord(awayRecord)}</p>
+      ${renderHistoryList(awayMatches,away,false)}
+    </div>
+
+    <div class="history-box">
+      <h3>🎯 Stima statistica</h3>
+      ${probability===null
+        ? '<p class="small">Dati insufficienti per calcolare una stima.</p>'
+        : `<p class="small">Probabilità indicativa di vittoria di ${escapeHTML(home)}</p>
+           <div class="probability good">${probability.toFixed(1)}%</div>
+           <p class="small">Stima basata sulla forma recente e sugli scontri diretti disponibili. Non è una previsione certa.</p>
+           <button onclick="useProbability('${id}',${probability.toFixed(1)})">Usa questa probabilità</button>`
+      }
+    </div>`;
+  } catch(error) {
+    container.innerHTML=`<div class="history-box"><p class="bad">Errore nel caricamento dello storico.</p><p class="small">${escapeHTML(error.message)}</p></div>`;
+  }
+}
+
+function useProbability(id,probability) {
+  $(`p-${id}`).value=probability;
+  calculate(id);
 }
 
 function calculate(id) {
-  const p = Number($(`p-${id}`).value) / 100;
-  const o = Number($(`o-${id}`).value);
-  const el = $(`calc-${id}`);
+  const p=Number($(`p-${id}`).value)/100;
+  const o=Number($(`o-${id}`).value);
+  const el=$(`calc-${id}`);
 
-  if (!(p > 0 && p < 1 && o > 1)) {
-    el.textContent =
-      "Inserisci una probabilità tra 1 e 99 e una quota maggiore di 1.";
+  if(!(p>0&&p<1&&o>1)){
+    el.textContent="Inserisci una probabilità tra 1 e 99 e una quota maggiore di 1.";
     return;
   }
 
-  const implied = 100 / o;
-  const ev = (p * o - 1) * 100;
+  const implied=100/o;
+  const ev=(p*o-1)*100;
 
-  el.innerHTML = `
-    Probabilità implicita della quota:
-    <b>${implied.toFixed(2)}%</b><br>
-
+  el.innerHTML=`
+    Probabilità implicita della quota: <b>${implied.toFixed(2)}%</b><br>
     Valore teorico stimato:
-    <b class="${ev >= 0 ? "good" : "bad"}">
-      ${ev >= 0 ? "+" : ""}${ev.toFixed(2)}%
-    </b><br>
-
-    <span class="small">
-      Calcolo basato sulla probabilità inserita manualmente.
-      Non è una previsione automatica.
-    </span>
-  `;
+    <b class="${ev>=0?"good":"bad"}">${ev>=0?"+":""}${ev.toFixed(2)}%</b><br>
+    <span class="small">Il calcolo dipende dalla probabilità inserita.</span>`;
 }
 
-function record(id, status) {
-  const m = getMatch(id);
-  if (!m) return;
+function record(id,status) {
+  const m=getMatch(id);
+  if(!m)return;
 
-  const p = Number($(`p-${id}`).value);
-  const o = Number($(`o-${id}`).value);
-  const stake = Number($(`s-${id}`).value);
+  const p=Number($(`p-${id}`).value);
+  const o=Number($(`o-${id}`).value);
+  const stake=Number($(`s-${id}`).value);
 
-  if (!(p > 0 && p < 100 && o > 1 && stake > 0)) {
-    alert("Inserisci probabilità, quota e importo validi prima di registrare.");
+  if(!(p>0&&p<100&&o>1&&stake>0)){
+    alert("Inserisci probabilità, quota e importo validi.");
     return;
   }
 
-  const home = m.home?.name || "Giocatore";
-  const away = m.away?.name || "Giocatore";
-  const league = m.league?.name || "Torneo";
+  const home=m.home?.name||"Giocatore";
+  const away=m.away?.name||"Giocatore";
+  const league=m.league?.name||"Torneo";
 
   bets.unshift({
     date:new Date().toLocaleDateString("it-IT"),
-    match:home + " vs " + away,
-    tournament:league,
-    p,o,stake,status,
-    profit:status === "Vinta" ? stake * (o - 1) : -stake
+    match:home+" vs "+away,
+    tournament:league,p,o,stake,status,
+    profit:status==="Vinta"?stake*(o-1):-stake
   });
 
   save();
 }
 
 function save() {
-  localStorage.setItem("ttr-bets", JSON.stringify(bets));
+  localStorage.setItem("ttr-bets",JSON.stringify(bets));
   renderStats();
   renderBets();
 }
 
 function renderStats() {
-  const closed = bets.filter(b =>
-    b.status === "Vinta" || b.status === "Persa"
-  );
+  const closed=bets.filter(b=>b.status==="Vinta"||b.status==="Persa");
+  const wins=closed.filter(b=>b.status==="Vinta").length;
+  const profit=closed.reduce((s,b)=>s+Number(b.profit||0),0);
 
-  const wins = closed.filter(b => b.status === "Vinta").length;
-  const profit = closed.reduce((s,b) => s + Number(b.profit || 0), 0);
-
-  $("total").textContent = closed.length;
-  $("rate").textContent =
-    (closed.length ? 100 * wins / closed.length : 0).toFixed(1) + "%";
-
-  $("profit").textContent =
-    (profit < 0 ? "−" : "") + "€" + Math.abs(profit).toFixed(2);
-
-  $("profit").className = profit >= 0 ? "good" : "bad";
+  $("total").textContent=closed.length;
+  $("rate").textContent=(closed.length?100*wins/closed.length:0).toFixed(1)+"%";
+  $("profit").textContent=(profit<0?"−":"")+"€"+Math.abs(profit).toFixed(2);
+  $("profit").className=profit>=0?"good":"bad";
 }
 
 function renderBets() {
-  $("bets").innerHTML = bets.length ? bets.map((b,i) => `
+  $("bets").innerHTML=bets.length?bets.map((b,i)=>`
     <div class="match">
       <div class="between">
         <b>${escapeHTML(b.match)}</b>
-        <span class="${b.status === "Vinta" ? "good" : "bad"}">
-          ${escapeHTML(b.status)}
-        </span>
+        <span class="${b.status==="Vinta"?"good":"bad"}">${escapeHTML(b.status)}</span>
       </div>
-
-      <p class="small">
-        ${escapeHTML(b.date)} · ${escapeHTML(b.tournament)}
-        · Quota ${Number(b.o).toFixed(2)}
-        · Puntata €${Number(b.stake).toFixed(2)}
-        · Prob. ${Number(b.p)}%
-      </p>
-
+      <p class="small">${escapeHTML(b.date)} · ${escapeHTML(b.tournament)} · Quota ${Number(b.o).toFixed(2)} · Puntata €${Number(b.stake).toFixed(2)} · Prob. ${Number(b.p)}%</p>
       <div class="between">
-        <b class="${b.profit >= 0 ? "good" : "bad"}">
-          ${b.profit >= 0 ? "+" : "−"}€${Math.abs(b.profit).toFixed(2)}
-        </b>
+        <b class="${b.profit>=0?"good":"bad"}">${b.profit>=0?"+":"−"}€${Math.abs(b.profit).toFixed(2)}</b>
         <button onclick="removeBet(${i})">Elimina</button>
       </div>
-    </div>
-  `).join("") : '<p class="small">Nessuna giocata registrata.</p>';
+    </div>`).join(""):'<p class="small">Nessuna giocata registrata.</p>';
 }
 
 function removeBet(i) {
-  if (confirm("Eliminare questa giocata?")) {
+  if(confirm("Eliminare questa giocata?")){
     bets.splice(i,1);
     save();
   }
 }
 
-$("search").addEventListener("input", renderMatches);
-$("tournament").addEventListener("change", renderMatches);
+$("search").addEventListener("input",renderMatches);
+$("tournament").addEventListener("change",renderMatches);
 
-$("export").addEventListener("click", () => {
-  const rows = [
+$("export").addEventListener("click",()=>{
+  const rows=[
     ["Data","Partita","Torneo","Probabilità","Quota","Puntata","Esito","Profitto"],
-    ...bets.map(b => [
-      b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,
-      Number(b.profit).toFixed(2)
-    ])
+    ...bets.map(b=>[b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,Number(b.profit).toFixed(2)])
   ];
 
-  const csv = rows.map(r =>
-    r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(";")
-  ).join("\r\n");
-
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(
-    new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"})
-  );
-  a.download = "table-tennis-radar.csv";
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+  a.download="table-tennis-radar.csv";
   a.click();
   URL.revokeObjectURL(a.href);
 });
