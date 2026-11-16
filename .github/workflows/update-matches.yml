@@ -1,10 +1,9 @@
-
 name: Update Table Tennis Matches
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '7,22,37,52 * * * *'
 
 permissions:
   contents: write
@@ -144,7 +143,6 @@ jobs:
             fi
 
             sleep 0.2
-
           done < /tmp/event-ids.txt
 
           echo "New histories downloaded: $COUNT"
@@ -158,7 +156,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           mkdir -p /tmp/ttr-output/history
-
           cp data/upcoming.json /tmp/ttr-output/upcoming.json
           cp data/inplay.json /tmp/ttr-output/inplay.json
           cp -a data/history/. /tmp/ttr-output/history/
@@ -167,11 +164,9 @@ jobs:
             echo "GitHub update attempt: $ATTEMPT"
 
             git fetch origin main
-
             git reset --hard origin/main
 
             mkdir -p data/history
-
             cp /tmp/ttr-output/upcoming.json data/upcoming.json
             cp /tmp/ttr-output/inplay.json data/inplay.json
             cp -a /tmp/ttr-output/history/. data/history/
