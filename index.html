@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -26,8 +27,8 @@ button.primary{background:#2767d9;border-color:#2767d9}
 button.win{background:#12452f;border-color:#24764f}
 button.loss{background:#501e2a;border-color:#873547}
 .filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.tabs{display:flex;gap:8px;margin:12px 0}
-.tabs button{flex:1}
+.tabs{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap}
+.tabs button{flex:1;min-width:85px;padding:10px 6px}
 .tabs button.active{background:#2767d9;border-color:#2767d9}
 .match{margin:10px 0}
 .match-top,.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -43,6 +44,7 @@ label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
 .good{color:var(--green)}
 .bad{color:var(--red)}
 .live{color:var(--red);font-weight:700}
+.finished{color:#a8f0c9;font-weight:700}
 .history-box{margin:12px 0;padding:12px;background:#0d1728;border:1px solid var(--line);border-radius:10px}
 .history-box h3{font-size:15px;margin:0 0 10px}
 .history-row{padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
@@ -77,7 +79,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
 <h2>Partite</h2>
 <div class="tabs">
 <button id="upcomingTab" class="active" onclick="setTab('upcoming')">Programmate</button>
-<button id="liveTab" onclick="setTab('live')">🔴 In diretta</button>
+<button id="liveTab" onclick="setTab('live')">🔴 LIVE</button>
+<button id="endedTab" onclick="setTab('ended')">Concluse</button>
 </div>
 
 <div class="filters">
@@ -107,6 +110,7 @@ const $ = id => document.getElementById(id);
 
 let upcoming=[];
 let live=[];
+let ended=[];
 let activeTab="upcoming";
 let bets=[];
 const historyCache={};
@@ -128,43 +132,58 @@ function formatTime(timestamp){
   const date=new Date(Number(timestamp)*1000);
   if(isNaN(date.getTime()))return "Orario non disponibile";
   return date.toLocaleString("it-IT",{
-    timeZone:"Europe/Rome",day:"2-digit",month:"2-digit",
-    hour:"2-digit",minute:"2-digit"
+    timeZone:"Europe/Rome",
+    day:"2-digit",
+    month:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit"
   });
 }
 
 function getAllMatches(){
-  return activeTab==="live"?live:upcoming;
+  if(activeTab==="live")return live;
+  if(activeTab==="ended")return ended;
+  return upcoming;
 }
 
 function getMatch(id){
-  return [...upcoming,...live].find(m=>String(m.id)===String(id));
+  return [...upcoming,...live,...ended].find(m=>String(m.id)===String(id));
+}
+
+async function readMatchFile(path,optional=false){
+  const response=await fetch(path+"?t="+Date.now(),{cache:"no-store"});
+  if(optional&&response.status===404)return {success:1,results:[]};
+  if(!response.ok)throw new Error(path+" - HTTP "+response.status);
+  const data=await response.json();
+  if(data.success!==1||!Array.isArray(data.results)){
+    throw new Error("Formato non valido: "+path);
+  }
+  return data;
 }
 
 async function loadMatches(){
   $("status").textContent="Caricamento dati BetsAPI...";
   try{
-    const [upResponse,liveResponse]=await Promise.all([
-      fetch("./data/upcoming.json?t="+Date.now(),{cache:"no-store"}),
-      fetch("./data/inplay.json?t="+Date.now(),{cache:"no-store"})
+    const [upData,liveData,endedData]=await Promise.all([
+      readMatchFile("./data/upcoming.json"),
+      readMatchFile("./data/inplay.json"),
+      readMatchFile("./data/ended.json",true)
     ]);
 
-    if(!upResponse.ok||!liveResponse.ok)throw new Error("File delle partite non raggiungibili.");
+    upcoming=upData.results;
+    live=liveData.results;
+    ended=endedData.results;
 
-    const upData=await upResponse.json();
-    const liveData=await liveResponse.json();
+    $("status").textContent=
+      "BetsAPI attivo · "+upcoming.length+" programmate · "+
+      live.length+" LIVE · "+ended.length+" concluse";
 
-    if(upData.success!==1||liveData.success!==1)throw new Error("Risposta BetsAPI non valida.");
-
-    upcoming=Array.isArray(upData.results)?upData.results:[];
-    live=Array.isArray(liveData.results)?liveData.results:[];
-
-    $("status").textContent="BetsAPI attivo · "+upcoming.length+" programmate · "+live.length+" LIVE";
     updateTournaments();
     renderMatches();
   }catch(error){
-    $("status").textContent="Errore: "+error.message;
-    $("matches").innerHTML='<p class="small">Non riesco a caricare le partite. Riprova.</p>';
+    $("status").textContent="Errore caricamento: "+error.message;
+    $("matches").innerHTML=
+      '<p class="bad">Non riesco a caricare tutti i file delle partite. Controlla il workflow GitHub.</p>';
   }
 }
 
@@ -172,16 +191,26 @@ function setTab(tab){
   activeTab=tab;
   $("upcomingTab").classList.toggle("active",tab==="upcoming");
   $("liveTab").classList.toggle("active",tab==="live");
+  $("endedTab").classList.toggle("active",tab==="ended");
   $("tournament").value="all";
   renderMatches();
 }
 
 function updateTournaments(){
-  const names=[...new Set([...upcoming,...live].map(m=>m.league?.name).filter(Boolean))].sort();
+  const names=[...new Set(
+    [...upcoming,...live,...ended]
+      .map(m=>m.league?.name)
+      .filter(Boolean)
+  )].sort();
+
   const select=$("tournament");
   const previous=select.value;
+
   select.innerHTML='<option value="all">Tutti i tornei</option>'+
-    names.map(name=>`<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`).join("");
+    names.map(name=>
+      `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`
+    ).join("");
+
   if(names.includes(previous))select.value=previous;
 }
 
@@ -193,6 +222,7 @@ function renderMatches(){
     const home=m.home?.name||"Giocatore sconosciuto";
     const away=m.away?.name||"Giocatore sconosciuto";
     const league=m.league?.name||"Torneo non disponibile";
+
     return (tournament==="all"||league===tournament)&&
       (home+" "+away+" "+league).toLowerCase().includes(q);
   });
@@ -209,12 +239,26 @@ function renderMatches(){
     const home=escapeHTML(m.home?.name||"Giocatore sconosciuto");
     const away=escapeHTML(m.away?.name||"Giocatore sconosciuto");
     const league=escapeHTML(m.league?.name||"Torneo non disponibile");
-    const time=activeTab==="live"?'<span class="live">● LIVE</span>':escapeHTML(formatTime(m.time));
-    const score=m.ss?`<div class="small">Risultato: ${escapeHTML(m.ss)}</div>`:"";
+
+    let time="";
+    if(activeTab==="live"){
+      time='<span class="live">● LIVE</span>';
+    }else if(activeTab==="ended"){
+      time='<span class="finished">✓ CONCLUSA</span>';
+    }else{
+      time=escapeHTML(formatTime(m.time));
+    }
+
+    const score=activeTab==="ended"&&m.ss
+      ? `<div class="small finished">Risultato finale: ${escapeHTML(m.ss)}</div>`
+      : m.ss?`<div class="small">Risultato: ${escapeHTML(m.ss)}</div>`:"";
 
     return `
     <div class="match">
-      <div class="match-top"><span class="small">${league}</span><span class="small">${time}</span></div>
+      <div class="match-top">
+        <span class="small">${league}</span>
+        <span class="small">${time}</span>
+      </div>
       <div class="players">${home} <span class="small">vs</span> ${away}</div>
       ${score}
       <div class="actions">
@@ -228,12 +272,24 @@ function renderMatches(){
 async function getHistory(id){
   if(historyCache[id])return historyCache[id];
 
-  const response=await fetch("./data/history/"+encodeURIComponent(id)+".json?t="+Date.now(),{cache:"no-store"});
-  if(response.status===404)return null;
-  if(!response.ok)throw new Error("Errore nel caricamento dello storico.");
+  const url="./data/history/"+encodeURIComponent(id)+".json?t="+Date.now();
+  const response=await fetch(url,{cache:"no-store"});
 
-  const data=await response.json();
-  if(data.success!==1||!data.results)throw new Error("Storico non valido.");
+  if(response.status===404)return null;
+  if(!response.ok){
+    throw new Error("Il file dello storico risponde HTTP "+response.status);
+  }
+
+  let data;
+  try{
+    data=await response.json();
+  }catch(e){
+    throw new Error("Il file dello storico non contiene JSON valido.");
+  }
+
+  if(data.success!==1||!data.results||typeof data.results!=="object"){
+    throw new Error("La risposta dello storico BetsAPI non è valida.");
+  }
 
   historyCache[id]=data.results;
   return data.results;
@@ -247,7 +303,10 @@ function getScoreWinner(match){
   const score=String(match.ss||"").trim();
   const parts=score.match(/^(\d+)\s*[-:]\s*(\d+)$/);
   if(!parts)return null;
-  const a=Number(parts[1]),b=Number(parts[2]);
+
+  const a=Number(parts[1]);
+  const b=Number(parts[2]);
+
   if(a===b)return null;
   return a>b?"home":"away";
 }
@@ -256,29 +315,45 @@ function playerResult(match,playerName){
   const target=normalizeName(playerName);
   const homeName=normalizeName(match.home?.name);
   const awayName=normalizeName(match.away?.name);
-  const side=homeName===target?"home":awayName===target?"away":null;
+
+  const side=homeName===target?"home":
+    awayName===target?"away":null;
+
   if(!side)return null;
+
   const winner=getScoreWinner(match);
   if(!winner)return null;
+
   return winner===side?"win":"loss";
 }
 
 function calculateRecord(matches,playerName){
   let wins=0,losses=0;
+
   matches.forEach(match=>{
     const result=playerResult(match,playerName);
     if(result==="win")wins++;
     if(result==="loss")losses++;
   });
-  return {wins,losses,total:wins+losses,percentage:wins+losses?wins/(wins+losses)*100:null};
+
+  return {
+    wins,
+    losses,
+    total:wins+losses,
+    percentage:wins+losses?wins/(wins+losses)*100:null
+  };
 }
 
 function showRecord(record){
-  return record.total?`${record.wins} vittorie · ${record.losses} sconfitte`:"Risultati non disponibili";
+  return record.total
+    ? `${record.wins} vittorie · ${record.losses} sconfitte`
+    : "Risultati non disponibili";
 }
 
 function renderHistoryList(matches,playerName,isH2H){
-  if(!Array.isArray(matches)||!matches.length)return '<p class="small">Nessuna partita precedente disponibile.</p>';
+  if(!Array.isArray(matches)||!matches.length){
+    return '<p class="small">Nessuna partita precedente disponibile.</p>';
+  }
 
   return matches.slice(0,20).map(match=>{
     const home=escapeHTML(match.home?.name||"?");
@@ -293,7 +368,10 @@ function renderHistoryList(matches,playerName,isH2H){
 
     return `<div class="history-row">
       <div>${home} <span class="small">vs</span> ${away}</div>
-      <div class="between"><span class="small">${date}</span><span class="history-score">${score}</span></div>
+      <div class="between">
+        <span class="small">${date}</span>
+        <span class="history-score">${score}</span>
+      </div>
       ${resultLabel}
     </div>`;
   }).join("");
@@ -317,7 +395,9 @@ function estimateProbability(homeRecord,awayRecord,h2h,homeName,awayName){
   if(!values.length)return null;
 
   const totalWeight=weights.reduce((a,b)=>a+b,0);
-  const probability=values.reduce((sum,value,i)=>sum+value*weights[i],0)/totalWeight;
+  const probability=values.reduce(
+    (sum,value,i)=>sum+value*weights[i],0
+  )/totalWeight;
 
   return Math.max(1,Math.min(99,probability*100));
 }
@@ -325,9 +405,13 @@ function estimateProbability(homeRecord,awayRecord,h2h,homeName,awayName){
 async function openMatch(id){
   const m=getMatch(id);
   const el=$("detail-"+id);
+
   if(!m||!el)return;
 
-  if(el.innerHTML){el.innerHTML="";return;}
+  if(el.innerHTML){
+    el.innerHTML="";
+    return;
+  }
 
   const home=m.home?.name||"Giocatore";
   const away=m.away?.name||"Giocatore";
@@ -340,7 +424,10 @@ async function openMatch(id){
     <summary>Analisi e precedenti</summary>
     <p class="small"><b>${escapeHTML(home)}</b> contro <b>${escapeHTML(away)}</b></p>
     <p class="small">Torneo: ${escapeHTML(league)}</p>
-    <div id="history-${id}"><p class="small">⏳ Caricamento H2H e forma recente...</p></div>
+
+    <div id="history-${id}">
+      <p class="small">⏳ Caricamento H2H e forma recente...</p>
+    </div>
 
     <h3>Calcolo quota e probabilità</h3>
     <div class="analysis-grid">
@@ -358,7 +445,10 @@ async function openMatch(id){
       </div>
     </div>
 
-    <div class="result" id="calc-${id}">Attendo il caricamento dei dati statistici.</div>
+    <div class="result" id="calc-${id}">
+      Attendo il caricamento dei dati statistici.
+    </div>
+
     <div class="actions">
       <button class="win" onclick="record('${id}','Vinta')">VINTA</button>
       <button class="loss" onclick="record('${id}','Persa')">PERSA</button>
@@ -366,6 +456,7 @@ async function openMatch(id){
   </details>`;
 
   $(`o-${id}`).addEventListener("input",()=>calculate(id));
+
   await loadMatchAnalysis(id,home,away);
 }
 
@@ -376,8 +467,12 @@ async function loadMatchAnalysis(id,home,away){
     const history=await getHistory(id);
 
     if(!history){
-      container.innerHTML='<div class="history-box"><p class="small">Lo storico di questa partita non è ancora disponibile. Attendi il prossimo aggiornamento automatico.</p></div>';
-      $(`calc-${id}`).textContent="Non posso calcolare la probabilità senza lo storico.";
+      container.innerHTML=`
+      <div class="history-box">
+        <p class="bad">Storico non ancora disponibile.</p>
+        <p class="small">Il file data/history/${escapeHTML(id)}.json non è stato trovato. Il workflow deve ancora scaricarlo.</p>
+      </div>`;
+      $(`calc-${id}`).textContent="Probabilità non calcolabile: manca lo storico.";
       return;
     }
 
@@ -390,7 +485,10 @@ async function loadMatchAnalysis(id,home,away){
     const h2hHome=calculateRecord(h2h,home);
     const h2hAway=calculateRecord(h2h,away);
 
-    const probability=estimateProbability(homeRecord,awayRecord,h2h,home,away);
+    const probability=estimateProbability(
+      homeRecord,awayRecord,h2h,home,away
+    );
+
     estimates[id]=probability;
 
     if(probability!==null){
@@ -421,17 +519,22 @@ async function loadMatchAnalysis(id,home,away){
     <div class="history-box">
       <h3>🎯 Stima statistica</h3>
       ${probability===null
-        ? '<p class="small">Dati insufficienti per calcolare una stima attendibile.</p>'
+        ? '<p class="small">Dati insufficienti per calcolare una stima.</p>'
         : `<p class="small">Probabilità indicativa di vittoria di ${escapeHTML(home)}</p>
            <div class="probability good">${probability.toFixed(1)}%</div>
-           <p class="small">Calcolo basato su forma recente (40% per ciascun giocatore) e H2H (20%), usando solo i dati disponibili. È una stima indicativa, non una previsione certa.</p>`
+           <p class="small">Stima basata sulla forma recente e sugli scontri diretti disponibili. È un'indicazione statistica, non una previsione certa.</p>`
       }
     </div>`;
 
     calculate(id);
+
   }catch(error){
-    container.innerHTML=`<div class="history-box"><p class="bad">Errore nel caricamento dello storico.</p><p class="small">${escapeHTML(error.message)}</p></div>`;
-    $(`calc-${id}`).textContent="Non posso calcolare la probabilità.";
+    container.innerHTML=`
+    <div class="history-box">
+      <p class="bad">Errore nel caricamento dello storico.</p>
+      <p class="small">${escapeHTML(error.message)}</p>
+    </div>`;
+    $(`calc-${id}`).textContent="Non posso calcolare la probabilità: verifica il file dello storico.";
   }
 }
 
@@ -446,21 +549,23 @@ function calculate(id){
   }
 
   if(!(odds>1)){
-    el.innerHTML=`Probabilità stimata: <b>${probability.toFixed(1)}%</b><br>Inserisci la quota per valutare se ha valore.`;
+    el.innerHTML=
+      `Probabilità stimata: <b>${probability.toFixed(1)}%</b><br>`+
+      "Inserisci la quota per valutare se ha valore.";
     return;
   }
 
   const implied=100/odds;
   const ev=(probability/100*odds-1)*100;
-  const value=probability-implied;
+  const difference=probability-implied;
 
   el.innerHTML=`
     Probabilità stimata: <b>${probability.toFixed(1)}%</b><br>
     Probabilità implicita della quota: <b>${implied.toFixed(2)}%</b><br>
-    Differenza: <b class="${value>=0?"good":"bad"}">${value>=0?"+":""}${value.toFixed(2)} punti</b><br>
+    Differenza: <b class="${difference>=0?"good":"bad"}">${difference>=0?"+":""}${difference.toFixed(2)} punti</b><br>
     Valore teorico: <b class="${ev>=0?"good":"bad"}">${ev>=0?"+":""}${ev.toFixed(2)}%</b><br>
     <b class="${ev>0?"good":"bad"}">${ev>0?"Possibile valore statistico":ev<0?"Quota senza valore secondo la stima":"Quota al limite"}</b>
-    <br><span class="small">Il valore dipende dalla qualità dei dati e dalla stima statistica.</span>`;
+    <br><span class="small">Il risultato dipende dalla qualità dei dati e dalla stima statistica.</span>`;
 }
 
 function record(id,status){
@@ -483,7 +588,8 @@ function record(id,status){
   bets.unshift({
     date:new Date().toLocaleDateString("it-IT"),
     match:home+" vs "+away,
-    tournament:league,p,o,stake,status,
+    tournament:league,
+    p,o,stake,status,
     profit:status==="Vinta"?stake*(o-1):-stake
   });
 
@@ -497,13 +603,20 @@ function save(){
 }
 
 function renderStats(){
-  const closed=bets.filter(b=>b.status==="Vinta"||b.status==="Persa");
+  const closed=bets.filter(
+    b=>b.status==="Vinta"||b.status==="Persa"
+  );
+
   const wins=closed.filter(b=>b.status==="Vinta").length;
   const profit=closed.reduce((s,b)=>s+Number(b.profit||0),0);
 
   $("total").textContent=closed.length;
-  $("rate").textContent=(closed.length?100*wins/closed.length:0).toFixed(1)+"%";
-  $("profit").textContent=(profit<0?"−":"")+"€"+Math.abs(profit).toFixed(2);
+  $("rate").textContent=
+    (closed.length?100*wins/closed.length:0).toFixed(1)+"%";
+
+  $("profit").textContent=
+    (profit<0?"−":"")+"€"+Math.abs(profit).toFixed(2);
+
   $("profit").className=profit>=0?"good":"bad";
 }
 
@@ -514,12 +627,20 @@ function renderBets(){
         <b>${escapeHTML(b.match)}</b>
         <span class="${b.status==="Vinta"?"good":"bad"}">${escapeHTML(b.status)}</span>
       </div>
-      <p class="small">${escapeHTML(b.date)} · ${escapeHTML(b.tournament)} · Quota ${Number(b.o).toFixed(2)} · Puntata €${Number(b.stake).toFixed(2)} · Prob. ${Number(b.p)}%</p>
+      <p class="small">
+        ${escapeHTML(b.date)} · ${escapeHTML(b.tournament)}
+        · Quota ${Number(b.o).toFixed(2)}
+        · Puntata €${Number(b.stake).toFixed(2)}
+        · Prob. ${Number(b.p)}%
+      </p>
       <div class="between">
-        <b class="${b.profit>=0?"good":"bad"}">${b.profit>=0?"+":"−"}€${Math.abs(b.profit).toFixed(2)}</b>
+        <b class="${b.profit>=0?"good":"bad"}">
+          ${b.profit>=0?"+":"−"}€${Math.abs(b.profit).toFixed(2)}
+        </b>
         <button onclick="removeBet(${i})">Elimina</button>
       </div>
-    </div>`).join(""):'<p class="small">Nessuna giocata registrata.</p>';
+    </div>`).join("")
+    :'<p class="small">Nessuna giocata registrata.</p>';
 }
 
 function removeBet(i){
@@ -535,12 +656,20 @@ $("tournament").addEventListener("change",renderMatches);
 $("export").addEventListener("click",()=>{
   const rows=[
     ["Data","Partita","Torneo","Probabilità","Quota","Puntata","Esito","Profitto"],
-    ...bets.map(b=>[b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,Number(b.profit).toFixed(2)])
+    ...bets.map(b=>[
+      b.date,b.match,b.tournament,b.p,b.o,b.stake,b.status,
+      Number(b.profit).toFixed(2)
+    ])
   ];
 
-  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  const csv=rows.map(r=>
+    r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")
+  ).join("\r\n");
+
   const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+  a.href=URL.createObjectURL(
+    new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"})
+  );
   a.download="table-tennis-radar.csv";
   a.click();
   URL.revokeObjectURL(a.href);
