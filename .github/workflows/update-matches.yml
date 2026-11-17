@@ -1,3 +1,4 @@
+
 name: Update Table Tennis Matches
 
 on:
@@ -31,6 +32,9 @@ jobs:
 
           TODAY=$(TZ=Europe/Rome date +%Y%m%d)
 
+          echo "Downloading matches for $TODAY"
+
+          # UPCOMING: first page
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/upcoming" \
             --data-urlencode "sport_id=92" \
@@ -45,15 +49,12 @@ jobs:
           PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-0001.json)
 
           if [ "$PER_PAGE" -lt 1 ]; then
-            echo "Invalid page size"
+            echo "Invalid upcoming page size"
             exit 1
           fi
 
           PAGES=$(( (TOTAL + PER_PAGE - 1) / PER_PAGE ))
-
-          if [ "$PAGES" -gt 100 ]; then
-            PAGES=100
-          fi
+          [ "$PAGES" -gt 100 ] && PAGES=100
 
           if [ "$PAGES" -gt 1 ]; then
             for PAGE in $(seq 2 "$PAGES"); do
@@ -79,6 +80,7 @@ jobs:
 
           rm data/upcoming-page-*.json
 
+          # INPLAY
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/inplay" \
             --data-urlencode "sport_id=92" \
@@ -87,8 +89,55 @@ jobs:
 
           jq -e '.success == 1' data/inplay.json > /dev/null
 
+          # ENDED: first page
+          curl -fsS --retry 3 --get \
+            "https://api.b365api.com/v3/events/ended" \
+            --data-urlencode "sport_id=92" \
+            --data-urlencode "day=$TODAY" \
+            --data-urlencode "page=1" \
+            --data-urlencode "token=$BETSAPI_TOKEN" \
+            -o data/ended-page-0001.json
+
+          jq -e '.success == 1' data/ended-page-0001.json > /dev/null
+
+          ENDED_TOTAL=$(jq -r '.pager.total // 0' data/ended-page-0001.json)
+          ENDED_PER_PAGE=$(jq -r '.pager.per_page // 50' data/ended-page-0001.json)
+
+          if [ "$ENDED_PER_PAGE" -lt 1 ]; then
+            echo "Invalid ended page size"
+            exit 1
+          fi
+
+          ENDED_PAGES=$(( (ENDED_TOTAL + ENDED_PER_PAGE - 1) / ENDED_PER_PAGE ))
+          [ "$ENDED_PAGES" -gt 100 ] && ENDED_PAGES=100
+
+          if [ "$ENDED_PAGES" -gt 1 ]; then
+            for PAGE in $(seq 2 "$ENDED_PAGES"); do
+              PADDED=$(printf "%04d" "$PAGE")
+
+              curl -fsS --retry 3 --get \
+                "https://api.b365api.com/v3/events/ended" \
+                --data-urlencode "sport_id=92" \
+                --data-urlencode "day=$TODAY" \
+                --data-urlencode "page=$PAGE" \
+                --data-urlencode "token=$BETSAPI_TOKEN" \
+                -o "data/ended-page-$PADDED.json"
+
+              jq -e '.success == 1' "data/ended-page-$PADDED.json" > /dev/null
+            done
+          fi
+
+          jq -s '{
+            success: 1,
+            pager: .[0].pager,
+            results: [ .[] | .results[] ]
+          }' data/ended-page-*.json > data/ended.json
+
+          rm data/ended-page-*.json
+
           echo "Scheduled matches: $(jq '.results | length' data/upcoming.json)"
           echo "LIVE matches: $(jq '.results | length' data/inplay.json)"
+          echo "Ended matches: $(jq '.results | length' data/ended.json)"
 
       - name: Download match histories
         env:
@@ -103,14 +152,16 @@ jobs:
           jq -r -s '
             [.[].results[]? | .id | tostring]
             | unique[]
-          ' data/upcoming.json data/inplay.json > /tmp/event-ids.txt
+          ' data/upcoming.json data/inplay.json data/ended.json > /tmp/event-ids.txt
+
+          echo "Total unique event IDs: $(wc -l < /tmp/event-ids.txt)"
 
           while read -r EVENT_ID; do
             [ -n "$EVENT_ID" ] || continue
 
             HISTORY_FILE="data/history/${EVENT_ID}.json"
 
-            if [ -f "$HISTORY_FILE" ] && jq -e '.success == 1' "$HISTORY_FILE" > /dev/null 2>&1; then
+            if [ -f "$HISTORY_FILE" ] && jq -e '.success == 1 and (.results | type == "object")' "$HISTORY_FILE" > /dev/null 2>&1; then
               continue
             fi
 
@@ -158,6 +209,7 @@ jobs:
           mkdir -p /tmp/ttr-output/history
           cp data/upcoming.json /tmp/ttr-output/upcoming.json
           cp data/inplay.json /tmp/ttr-output/inplay.json
+          cp data/ended.json /tmp/ttr-output/ended.json
           cp -a data/history/. /tmp/ttr-output/history/
 
           for ATTEMPT in 1 2 3 4 5; do
@@ -169,9 +221,10 @@ jobs:
             mkdir -p data/history
             cp /tmp/ttr-output/upcoming.json data/upcoming.json
             cp /tmp/ttr-output/inplay.json data/inplay.json
+            cp /tmp/ttr-output/ended.json data/ended.json
             cp -a /tmp/ttr-output/history/. data/history/
 
-            git add data/upcoming.json data/inplay.json data/history/
+            git add data/upcoming.json data/inplay.json data/ended.json data/history/
 
             if git diff --cached --quiet; then
               echo "No new data to save"
