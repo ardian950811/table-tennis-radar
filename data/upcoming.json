@@ -3,602 +3,56 @@
   "pager": {
     "page": 1,
     "per_page": 50,
-    "total": 61
+    "total": 45
   },
   "results": [
     {
-      "id": "13473276",
-      "sport_id": "92",
-      "time": "1794948900",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "1125129",
-        "name": "Michal Machelski",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "934089",
-        "name": "Zbigniew Nocun",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13473284",
-      "sport_id": "92",
-      "time": "1794949200",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "808044",
-        "name": "Piotr Kaczynski",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "688066",
-        "name": "Mariusz Koczyba",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13473345",
-      "sport_id": "92",
-      "time": "1794949200",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "822496",
-        "name": "Wiekiera Arkadiusz",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1107118",
-        "name": "Kamil Kos",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13473293",
-      "sport_id": "92",
-      "time": "1794949500",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "898479",
-        "name": "Bartlomiej Mrugala",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "774426",
-        "name": "Miroslaw Piecowski",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13471187",
-      "sport_id": "92",
-      "time": "1794949800",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1261513",
-        "name": "Richard Jancak",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "691087",
-        "name": "Radomir Benesz",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204766831"
-    },
-    {
-      "id": "13468714",
-      "sport_id": "92",
-      "time": "1794950100",
-      "time_status": "0",
-      "league": {
-        "id": "22307",
-        "name": "Setka Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "758372",
-        "name": "Vasyl Moshovskyi",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "328888",
-        "name": "Ivan Fashchevskyi",
-        "image_id": 0,
-        "cc": "ua"
-      },
-      "ss": null,
-      "bet365_id": "204730272"
-    },
-    {
-      "id": "13470735",
-      "sport_id": "92",
-      "time": "1794950100",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1227390",
-        "name": "Jakub Volny",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "689037",
-        "name": "Daniel Branny",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204766545"
-    },
-    {
-      "id": "13470773",
-      "sport_id": "92",
-      "time": "1794950400",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "808048",
-        "name": "Ondrej Sebek",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1109527",
-        "name": "Michal Kolbusovsky",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204770794"
-    },
-    {
-      "id": "13473316",
-      "sport_id": "92",
-      "time": "1794950400",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "833546",
-        "name": "Fabian Sikora",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1145992",
-        "name": "Marek Tkocz",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13473317",
-      "sport_id": "92",
-      "time": "1794950400",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "805944",
-        "name": "Marian Brunner",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1183159",
-        "name": "Andriej Fomin",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null
-    },
-    {
-      "id": "13468382",
-      "sport_id": "92",
-      "time": "1794950700",
-      "time_status": "0",
-      "league": {
-        "id": "22307",
-        "name": "Setka Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "543434",
-        "name": "Volodymyr Hainiuk",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1048384",
-        "name": "Viktor Sharpai",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null,
-      "bet365_id": "204730271"
-    },
-    {
-      "id": "13470812",
-      "sport_id": "92",
-      "time": "1794950700",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "560213",
-        "name": "Michal Brozek",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "380926",
-        "name": "Marek Kulisek",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204770991"
-    },
-    {
-      "id": "13465203",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22742",
-        "name": "Czech Liga Pro",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "548705",
-        "name": "Jiri Plachy",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "686972",
-        "name": "Kyryl Darin",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204717957"
-    },
-    {
-      "id": "13465817",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22742",
-        "name": "Czech Liga Pro",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1210751",
-        "name": "Miroslav Stolba",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "away": {
-        "id": "1349889",
-        "name": "Karel Zurek",
-        "image_id": 0,
-        "cc": "ru"
-      },
-      "ss": null,
-      "bet365_id": "204717959"
-    },
-    {
-      "id": "13465829",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22742",
-        "name": "Czech Liga Pro",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1234872",
-        "name": "Daniel Unzeitig",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "away": {
-        "id": "1266497",
-        "name": "Marek Bereiter",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null,
-      "bet365_id": "204717960"
-    },
-    {
-      "id": "13465844",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22742",
-        "name": "Czech Liga Pro",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1040616",
-        "name": "Ondrej Cmerda",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "away": {
-        "id": "688187",
-        "name": "Radim Urbaniec",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204717958"
-    },
-    {
-      "id": "13465908",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22742",
-        "name": "Czech Liga Pro",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "338649",
-        "name": "Jan Zajicek",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "away": {
-        "id": "375572",
-        "name": "Erik Mares",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204717956"
-    },
-    {
-      "id": "13468645",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "22307",
-        "name": "Setka Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "634047",
-        "name": "Roman Konkulovskyi",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "382358",
-        "name": "Bohdan Chaikovskyi",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null,
-      "bet365_id": "204730270"
-    },
-    {
-      "id": "13470879",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "813475",
-        "name": "Lukasz Oracz",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1144340",
-        "name": "Oliver Vincenec",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null,
-      "bet365_id": "204712492"
-    },
-    {
-      "id": "13470884",
-      "sport_id": "92",
-      "time": "1794951000",
-      "time_status": "0",
-      "league": {
-        "id": "29128",
-        "name": "TT Elite Series",
-        "cc": null
-      },
-      "home": {
-        "id": "721862",
-        "name": "Lukasz Pietraszko",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "1012682",
-        "name": "Szymon Brud",
-        "image_id": 0,
-        "cc": null
-      },
-      "ss": null,
-      "bet365_id": "204712518"
-    },
-    {
-      "id": "13470844",
-      "sport_id": "92",
-      "time": "1794951300",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "839330",
-        "name": "Milan Flesar",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "away": {
-        "id": "742757",
-        "name": "Jan Kabelka",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204766345"
-    },
-    {
-      "id": "13468602",
+      "id": "13473376",
       "sport_id": "92",
       "time": "1794951900",
       "time_status": "0",
       "league": {
-        "id": "22307",
-        "name": "Setka Cup",
-        "cc": "cz"
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
       },
       "home": {
-        "id": "355265",
-        "name": "Yaroslav Tebenko",
+        "id": "931021",
+        "name": "Milosz Cesarz",
         "image_id": 0,
         "cc": null
       },
       "away": {
-        "id": "661146",
-        "name": "Denys Maltsev",
+        "id": "1149105",
+        "name": "Grzegorz Jurowicz",
         "image_id": 0,
         "cc": null
       },
-      "ss": null,
-      "bet365_id": "204730269"
+      "ss": null
     },
     {
-      "id": "13470826",
+      "id": "13473484",
       "sport_id": "92",
-      "time": "1794952200",
+      "time": "1794951900",
       "time_status": "0",
       "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
       },
       "home": {
-        "id": "684030",
-        "name": "Zbynek Vyskocil",
+        "id": "929676",
+        "name": "Kamil Delikatny",
         "image_id": 0,
         "cc": null
       },
       "away": {
-        "id": "675861",
-        "name": "Marek Dlask",
+        "id": "1342661",
+        "name": "Krzysztof Bladziak",
         "image_id": 0,
         "cc": null
       },
-      "ss": null,
-      "bet365_id": "204770795"
-    },
-    {
-      "id": "13470895",
-      "sport_id": "92",
-      "time": "1794952500",
-      "time_status": "0",
-      "league": {
-        "id": "29097",
-        "name": "TT Cup",
-        "cc": "cz"
-      },
-      "home": {
-        "id": "1084329",
-        "name": "Jan Vonasek",
-        "image_id": 0,
-        "cc": null
-      },
-      "away": {
-        "id": "380926",
-        "name": "Marek Kulisek",
-        "image_id": 0,
-        "cc": "cz"
-      },
-      "ss": null,
-      "bet365_id": "204770992"
+      "ss": null
     },
     {
       "id": "13467411",
@@ -682,6 +136,78 @@
       "bet365_id": "204712519"
     },
     {
+      "id": "13473502",
+      "sport_id": "92",
+      "time": "1794952800",
+      "time_status": "0",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1227390",
+        "name": "Jakub Volny",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1159074",
+        "name": "Laurent Lasota",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": null
+    },
+    {
+      "id": "13473538",
+      "sport_id": "92",
+      "time": "1794952800",
+      "time_status": "0",
+      "league": {
+        "id": "22742",
+        "name": "Czech Liga Pro",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "741786",
+        "name": "Ondrej Svacha",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "1040616",
+        "name": "Ondrej Cmerda",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": null
+    },
+    {
+      "id": "13473572",
+      "sport_id": "92",
+      "time": "1794952800",
+      "time_status": "0",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "820053",
+        "name": "Gracjan Rokita",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1196993",
+        "name": "Jakub Komorowicz",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": null
+    },
+    {
       "id": "13468616",
       "sport_id": "92",
       "time": "1794953100",
@@ -705,6 +231,30 @@
       },
       "ss": null,
       "bet365_id": "204730267"
+    },
+    {
+      "id": "13473429",
+      "sport_id": "92",
+      "time": "1794953100",
+      "time_status": "0",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1125129",
+        "name": "Michal Machelski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1183159",
+        "name": "Andriej Fomin",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": null
     },
     {
       "id": "13470873",
@@ -891,6 +441,54 @@
       },
       "ss": null,
       "bet365_id": "204730264"
+    },
+    {
+      "id": "13473501",
+      "sport_id": "92",
+      "time": "1794954600",
+      "time_status": "0",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "689037",
+        "name": "Daniel Branny",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "688200",
+        "name": "Tomas Kindl",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": null
+    },
+    {
+      "id": "13473537",
+      "sport_id": "92",
+      "time": "1794954600",
+      "time_status": "0",
+      "league": {
+        "id": "22742",
+        "name": "Czech Liga Pro",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "639253",
+        "name": "Michal Zahradka",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "688187",
+        "name": "Radim Urbaniec",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": null
     },
     {
       "id": "13468693",

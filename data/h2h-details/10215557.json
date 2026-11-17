@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10215557",
+      "sport_id": "92",
+      "time": "1751621100",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "312241",
+        "name": "Michal Minda",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "932946",
+        "name": "Frantisek Krcil",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "19",
+          "away": "21"
+        },
+        "2": {
+          "home": "4",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        },
+        "4": {
+          "home": "11",
+          "away": "8"
+        },
+        "5": {
+          "home": "4",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1765075713"
+    }
+  ]
+}
