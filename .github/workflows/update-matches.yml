@@ -34,7 +34,6 @@ jobs:
 
           echo "Downloading matches for $TODAY"
 
-          # UPCOMING: first page
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/upcoming" \
             --data-urlencode "sport_id=92" \
@@ -80,7 +79,6 @@ jobs:
 
           rm data/upcoming-page-*.json
 
-          # INPLAY
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/inplay" \
             --data-urlencode "sport_id=92" \
@@ -89,7 +87,6 @@ jobs:
 
           jq -e '.success == 1' data/inplay.json > /dev/null
 
-          # ENDED: first page
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/ended" \
             --data-urlencode "sport_id=92" \
@@ -149,12 +146,21 @@ jobs:
           COUNT=0
           MAX_HISTORY_PER_RUN=100
 
+          # PRIORITY: UPCOMING, then LIVE, then ENDED.
+          # Preserve this order while removing duplicate IDs.
           jq -r -s '
-            [.[].results[]? | .id | tostring]
-            | unique[]
+            (
+              [.[0].results[]? | .id | tostring] +
+              [.[1].results[]? | .id | tostring] +
+              [.[2].results[]? | .id | tostring]
+            )
+            | reduce .[] as $id
+                ([]; if index($id) then . else . + [$id] end)
+            | .[]
           ' data/upcoming.json data/inplay.json data/ended.json > /tmp/event-ids.txt
 
           echo "Total unique event IDs: $(wc -l < /tmp/event-ids.txt)"
+          echo "History priority: UPCOMING -> LIVE -> ENDED"
 
           while read -r EVENT_ID; do
             [ -n "$EVENT_ID" ] || continue
