@@ -1,0 +1,67 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10052853",
+      "sport_id": "92",
+      "time": "1749145800",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "809294",
+        "name": "Krystian Kolodziej",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "263449",
+        "name": "Michal Murawski",
+        "image_id": 0,
+        "cc": "pl"
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "4"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "11",
+          "away": "8"
+        },
+        "5": {
+          "home": "7",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69571",
+          "name": "OSP 1",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "inplay_created_at": "0",
+      "inplay_updated_at": "0",
+      "confirmed_at": "1768649245",
+      "bet365_id": "175789765"
+    }
+  ]
+}
