@@ -28,56 +28,54 @@ jobs:
           BETSAPI_TOKEN: ${{ secrets.BETSAPI_TOKEN }}
         run: |
           set -e
-          mkdir -p data/history
+          mkdir -p data/history data/h2h-details
 
           TODAY=$(TZ=Europe/Rome date +%Y%m%d)
 
-          echo "Downloading matches for $TODAY"
+          download_pages() {
+            ENDPOINT="$1"
+            OUTPUT="$2"
 
-          curl -fsS --retry 3 --get \
-            "https://api.b365api.com/v3/events/upcoming" \
-            --data-urlencode "sport_id=92" \
-            --data-urlencode "day=$TODAY" \
-            --data-urlencode "page=1" \
-            --data-urlencode "token=$BETSAPI_TOKEN" \
-            -o data/upcoming-page-0001.json
+            curl -fsS --retry 3 --get \
+              "https://api.b365api.com/v3/events/$ENDPOINT" \
+              --data-urlencode "sport_id=92" \
+              --data-urlencode "day=$TODAY" \
+              --data-urlencode "page=1" \
+              --data-urlencode "token=$BETSAPI_TOKEN" \
+              -o /tmp/page-0001.json
 
-          jq -e '.success == 1' data/upcoming-page-0001.json > /dev/null
+            jq -e '.success == 1' /tmp/page-0001.json >/dev/null
 
-          TOTAL=$(jq -r '.pager.total // 0' data/upcoming-page-0001.json)
-          PER_PAGE=$(jq -r '.pager.per_page // 50' data/upcoming-page-0001.json)
+            TOTAL=$(jq -r '.pager.total // 0' /tmp/page-0001.json)
+            PER_PAGE=$(jq -r '.pager.per_page // 50' /tmp/page-0001.json)
+            [ "$PER_PAGE" -gt 0 ] || exit 1
 
-          if [ "$PER_PAGE" -lt 1 ]; then
-            echo "Invalid upcoming page size"
-            exit 1
-          fi
+            PAGES=$(( (TOTAL + PER_PAGE - 1) / PER_PAGE ))
+            [ "$PAGES" -le 100 ] || PAGES=100
 
-          PAGES=$(( (TOTAL + PER_PAGE - 1) / PER_PAGE ))
-          [ "$PAGES" -gt 100 ] && PAGES=100
-
-          if [ "$PAGES" -gt 1 ]; then
             for PAGE in $(seq 2 "$PAGES"); do
               PADDED=$(printf "%04d" "$PAGE")
-
               curl -fsS --retry 3 --get \
-                "https://api.b365api.com/v3/events/upcoming" \
+                "https://api.b365api.com/v3/events/$ENDPOINT" \
                 --data-urlencode "sport_id=92" \
                 --data-urlencode "day=$TODAY" \
                 --data-urlencode "page=$PAGE" \
                 --data-urlencode "token=$BETSAPI_TOKEN" \
-                -o "data/upcoming-page-$PADDED.json"
-
-              jq -e '.success == 1' "data/upcoming-page-$PADDED.json" > /dev/null
+                -o "/tmp/page-$PADDED.json"
+              jq -e '.success == 1' "/tmp/page-$PADDED.json" >/dev/null
             done
-          fi
 
-          jq -s '{
-            success: 1,
-            pager: .[0].pager,
-            results: [ .[] | .results[] ]
-          }' data/upcoming-page-*.json > data/upcoming.json
+            jq -s '{
+              success: 1,
+              pager: .[0].pager,
+              results: [ .[] | .results[]? ]
+            }' /tmp/page-*.json > "$OUTPUT"
 
-          rm data/upcoming-page-*.json
+            rm -f /tmp/page-*.json
+          }
+
+          download_pages upcoming data/upcoming.json
+          download_pages ended data/ended.json
 
           curl -fsS --retry 3 --get \
             "https://api.b365api.com/v3/events/inplay" \
@@ -85,56 +83,11 @@ jobs:
             --data-urlencode "token=$BETSAPI_TOKEN" \
             -o data/inplay.json
 
-          jq -e '.success == 1' data/inplay.json > /dev/null
+          jq -e '.success == 1' data/inplay.json >/dev/null
 
-          curl -fsS --retry 3 --get \
-            "https://api.b365api.com/v3/events/ended" \
-            --data-urlencode "sport_id=92" \
-            --data-urlencode "day=$TODAY" \
-            --data-urlencode "page=1" \
-            --data-urlencode "token=$BETSAPI_TOKEN" \
-            -o data/ended-page-0001.json
-
-          jq -e '.success == 1' data/ended-page-0001.json > /dev/null
-
-          ENDED_TOTAL=$(jq -r '.pager.total // 0' data/ended-page-0001.json)
-          ENDED_PER_PAGE=$(jq -r '.pager.per_page // 50' data/ended-page-0001.json)
-
-          if [ "$ENDED_PER_PAGE" -lt 1 ]; then
-            echo "Invalid ended page size"
-            exit 1
-          fi
-
-          ENDED_PAGES=$(( (ENDED_TOTAL + ENDED_PER_PAGE - 1) / ENDED_PER_PAGE ))
-          [ "$ENDED_PAGES" -gt 100 ] && ENDED_PAGES=100
-
-          if [ "$ENDED_PAGES" -gt 1 ]; then
-            for PAGE in $(seq 2 "$ENDED_PAGES"); do
-              PADDED=$(printf "%04d" "$PAGE")
-
-              curl -fsS --retry 3 --get \
-                "https://api.b365api.com/v3/events/ended" \
-                --data-urlencode "sport_id=92" \
-                --data-urlencode "day=$TODAY" \
-                --data-urlencode "page=$PAGE" \
-                --data-urlencode "token=$BETSAPI_TOKEN" \
-                -o "data/ended-page-$PADDED.json"
-
-              jq -e '.success == 1' "data/ended-page-$PADDED.json" > /dev/null
-            done
-          fi
-
-          jq -s '{
-            success: 1,
-            pager: .[0].pager,
-            results: [ .[] | .results[] ]
-          }' data/ended-page-*.json > data/ended.json
-
-          rm data/ended-page-*.json
-
-          echo "Scheduled matches: $(jq '.results | length' data/upcoming.json)"
-          echo "LIVE matches: $(jq '.results | length' data/inplay.json)"
-          echo "Ended matches: $(jq '.results | length' data/ended.json)"
+          echo "Programmate: $(jq '.results | length' data/upcoming.json)"
+          echo "LIVE: $(jq '.results | length' data/inplay.json)"
+          echo "Concluse: $(jq '.results | length' data/ended.json)"
 
       - name: Download match histories
         env:
@@ -143,11 +96,6 @@ jobs:
           set -e
           mkdir -p data/history
 
-          COUNT=0
-          MAX_HISTORY_PER_RUN=100
-
-          # PRIORITY: UPCOMING, then LIVE, then ENDED.
-          # Preserve this order while removing duplicate IDs.
           jq -r -s '
             (
               [.[0].results[]? | .id | tostring] +
@@ -159,15 +107,14 @@ jobs:
             | .[]
           ' data/upcoming.json data/inplay.json data/ended.json > /tmp/event-ids.txt
 
-          echo "Total unique event IDs: $(wc -l < /tmp/event-ids.txt)"
-          echo "History priority: UPCOMING -> LIVE -> ENDED"
+          COUNT=0
+          MAX_HISTORY_PER_RUN=100
 
           while read -r EVENT_ID; do
             [ -n "$EVENT_ID" ] || continue
+            FILE="data/history/${EVENT_ID}.json"
 
-            HISTORY_FILE="data/history/${EVENT_ID}.json"
-
-            if [ -f "$HISTORY_FILE" ] && jq -e '.success == 1 and (.results | type == "object")' "$HISTORY_FILE" > /dev/null 2>&1; then
+            if [ -f "$FILE" ] && jq -e '.success == 1' "$FILE" >/dev/null 2>&1; then
               continue
             fi
 
@@ -176,34 +123,93 @@ jobs:
               break
             fi
 
-            echo "Downloading history for event $EVENT_ID"
-
-            TEMP_FILE="${HISTORY_FILE}.tmp"
+            echo "Downloading history $EVENT_ID"
 
             if curl -fsS --retry 2 --get \
               "https://api.b365api.com/v1/event/history" \
               --data-urlencode "event_id=$EVENT_ID" \
               --data-urlencode "qty=20" \
               --data-urlencode "token=$BETSAPI_TOKEN" \
-              -o "$TEMP_FILE"; then
+              -o "$FILE.tmp"; then
 
-              if jq -e '.success == 1 and (.results | type == "object")' "$TEMP_FILE" > /dev/null; then
-                mv "$TEMP_FILE" "$HISTORY_FILE"
+              if jq -e '.success == 1 and (.results | type == "object")' "$FILE.tmp" >/dev/null; then
+                mv "$FILE.tmp" "$FILE"
                 COUNT=$((COUNT + 1))
               else
-                echo "Invalid history response for event $EVENT_ID"
-                rm -f "$TEMP_FILE"
+                rm -f "$FILE.tmp"
               fi
             else
-              echo "History request failed for event $EVENT_ID"
-              rm -f "$TEMP_FILE"
+              rm -f "$FILE.tmp"
             fi
 
             sleep 0.2
           done < /tmp/event-ids.txt
 
-          echo "New histories downloaded: $COUNT"
-          echo "Total history files: $(find data/history -maxdepth 1 -name '*.json' | wc -l)"
+          echo "Nuovi storici scaricati: $COUNT"
+
+      - name: Download H2H set scores
+        env:
+          BETSAPI_TOKEN: ${{ secrets.BETSAPI_TOKEN }}
+        run: |
+          set -e
+          mkdir -p data/h2h-details
+
+          find data/history -maxdepth 1 -name '*.json' -print0 |
+            xargs -0 -r jq -r '.results.h2h[]?.id // empty' |
+            sort -u > /tmp/all-h2h-ids.txt
+
+          : > /tmp/missing-h2h-ids.txt
+
+          while read -r ID; do
+            [ -n "$ID" ] || continue
+            [ -f "data/h2h-details/${ID}.json" ] || echo "$ID" >> /tmp/missing-h2h-ids.txt
+          done < /tmp/all-h2h-ids.txt
+
+          COUNT=0
+          MAX_DETAILS_PER_RUN=100
+
+          while [ -s /tmp/missing-h2h-ids.txt ] && [ "$COUNT" -lt "$MAX_DETAILS_PER_RUN" ]; do
+            IDS=$(head -n 10 /tmp/missing-h2h-ids.txt | paste -sd, -)
+            BATCH_COUNT=$(echo "$IDS" | tr ',' '\n' | wc -l)
+
+            echo "Downloading H2H details: $IDS"
+
+            if curl -fsS --retry 2 --get \
+              "https://api.b365api.com/v1/event/view" \
+              --data-urlencode "event_id=$IDS" \
+              --data-urlencode "token=$BETSAPI_TOKEN" \
+              -o /tmp/h2h-view.json; then
+
+              if jq -e '.success == 1' /tmp/h2h-view.json >/dev/null; then
+                while read -r ID; do
+                  [ -n "$ID" ] || continue
+
+                  jq --arg id "$ID" '
+                    {
+                      success: 1,
+                      results: [
+                        .results[]?
+                        | select((.id | tostring) == $id)
+                      ]
+                    }
+                  ' /tmp/h2h-view.json > "data/h2h-details/${ID}.json"
+
+                  if ! jq -e '.results | length > 0' "data/h2h-details/${ID}.json" >/dev/null; then
+                    rm -f "data/h2h-details/${ID}.json"
+                  fi
+                done < <(echo "$IDS" | tr ',' '\n')
+              fi
+            fi
+
+            COUNT=$((COUNT + BATCH_COUNT))
+            head -n 10 /tmp/missing-h2h-ids.txt > /tmp/processed.txt
+            tail -n +11 /tmp/missing-h2h-ids.txt > /tmp/remaining.txt
+            mv /tmp/remaining.txt /tmp/missing-h2h-ids.txt
+            sleep 0.3
+          done
+
+          echo "ID H2H elaborati in questo aggiornamento: $COUNT"
+          echo "Dettagli H2H salvati: $(find data/h2h-details -name '*.json' | wc -l)"
 
       - name: Save match data safely
         run: |
@@ -212,41 +218,45 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          mkdir -p /tmp/ttr-output/history
+          mkdir -p /tmp/ttr-output/history /tmp/ttr-output/h2h-details
+
           cp data/upcoming.json /tmp/ttr-output/upcoming.json
           cp data/inplay.json /tmp/ttr-output/inplay.json
           cp data/ended.json /tmp/ttr-output/ended.json
           cp -a data/history/. /tmp/ttr-output/history/
+          cp -a data/h2h-details/. /tmp/ttr-output/h2h-details/
 
           for ATTEMPT in 1 2 3 4 5; do
-            echo "GitHub update attempt: $ATTEMPT"
+            echo "Tentativo GitHub: $ATTEMPT"
 
             git fetch origin main
             git reset --hard origin/main
 
-            mkdir -p data/history
+            mkdir -p data/history data/h2h-details
+
             cp /tmp/ttr-output/upcoming.json data/upcoming.json
             cp /tmp/ttr-output/inplay.json data/inplay.json
             cp /tmp/ttr-output/ended.json data/ended.json
             cp -a /tmp/ttr-output/history/. data/history/
+            cp -a /tmp/ttr-output/h2h-details/. data/h2h-details/
 
-            git add data/upcoming.json data/inplay.json data/ended.json data/history/
+            git add data/upcoming.json data/inplay.json data/ended.json data/history/ data/h2h-details/
 
             if git diff --cached --quiet; then
-              echo "No new data to save"
+              echo "Nessun nuovo dato da salvare"
               exit 0
             fi
 
-            git commit -m "Update table tennis matches"
+            git commit -m "Update table tennis data"
 
             if git push origin HEAD:main; then
-              echo "Data updated successfully"
+              echo "Aggiornamento completato"
               exit 0
             fi
 
-            echo "Push rejected, retrying..."
+            echo "Push non riuscito, nuovo tentativo..."
             sleep 3
           done
 
-          echo "Unable to update repository after 5 attempts"
+          echo "Impossibile aggiornare GitHub"
           exit 1
