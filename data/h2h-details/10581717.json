@@ -1,0 +1,35 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10581717",
+      "sport_id": "92",
+      "time": "1756486800",
+      "time_status": "3",
+      "league": {
+        "id": "14083",
+        "name": "Champions League",
+        "cc": null
+      },
+      "home": {
+        "id": "760107",
+        "name": "Skst Tesla Batteries Havirov",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "301577",
+        "name": "Stk Starr Varazdin",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-0",
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "numberofperiods": "5"
+      },
+      "confirmed_at": "1769635540"
+    }
+  ]
+}

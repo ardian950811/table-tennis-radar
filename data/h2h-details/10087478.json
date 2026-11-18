@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10087478",
+      "sport_id": "92",
+      "time": "1749683100",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "801425",
+        "name": "Maciej Lamer",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "821044",
+        "name": "Arkadiusz Skupinski",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-2",
+      "scores": {
+        "1": {
+          "home": "4",
+          "away": "11"
+        },
+        "2": {
+          "home": "14",
+          "away": "12"
+        },
+        "3": {
+          "home": "12",
+          "away": "14"
+        },
+        "4": {
+          "home": "11",
+          "away": "8"
+        },
+        "5": {
+          "home": "11",
+          "away": "7"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1769661921"
+    }
+  ]
+}
