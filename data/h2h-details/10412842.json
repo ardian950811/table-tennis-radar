@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10412842",
+      "sport_id": "92",
+      "time": "1754211600",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1023520",
+        "name": "Mateusz Karpiuk",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1158411",
+        "name": "Mateusz Baran",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "6",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "8"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        },
+        "4": {
+          "home": "11",
+          "away": "9"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69603",
+          "name": "Poland 1",
+          "city": "Kielce",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1769665776"
+    }
+  ]
+}
