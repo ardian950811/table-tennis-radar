@@ -1,0 +1,63 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10418139",
+      "sport_id": "92",
+      "time": "1754409600",
+      "time_status": "3",
+      "league": {
+        "id": "22742",
+        "name": "Czech Liga Pro",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "798449",
+        "name": "Marek Blejchar",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "1157769",
+        "name": "Matej Becak",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "16",
+          "away": "14"
+        },
+        "2": {
+          "home": "11",
+          "away": "6"
+        },
+        "3": {
+          "home": "10",
+          "away": "12"
+        },
+        "4": {
+          "home": "12",
+          "away": "10"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "76891",
+          "name": "A16 - Liga PRO",
+          "city": "Havlickuv Brod",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "inplay_created_at": "0",
+      "inplay_updated_at": "0",
+      "confirmed_at": "1770213101",
+      "bet365_id": "179036895"
+    }
+  ]
+}

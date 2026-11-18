@@ -1,0 +1,59 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10418417",
+      "sport_id": "92",
+      "time": "1754442000",
+      "time_status": "3",
+      "league": {
+        "id": "22742",
+        "name": "Czech Liga Pro",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1157769",
+        "name": "Matej Becak",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "798449",
+        "name": "Marek Blejchar",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "5"
+        },
+        "2": {
+          "home": "11",
+          "away": "7"
+        },
+        "3": {
+          "home": "11",
+          "away": "5"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "76893",
+          "name": "A14 - Liga PRO",
+          "city": "Liberec",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "inplay_created_at": "0",
+      "inplay_updated_at": "0",
+      "confirmed_at": "1769388724",
+      "bet365_id": "179036960"
+    }
+  ]
+}
