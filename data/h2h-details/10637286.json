@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10637286",
+      "sport_id": "92",
+      "time": "1757439900",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "314234",
+        "name": "Bartosz Kwodawski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "759877",
+        "name": "Przemyslaw Blocho",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "12",
+          "away": "10"
+        },
+        "2": {
+          "home": "9",
+          "away": "11"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        },
+        "4": {
+          "home": "14",
+          "away": "16"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1779913439"
+    }
+  ]
+}

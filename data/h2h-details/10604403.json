@@ -1,0 +1,70 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10604403",
+      "sport_id": "92",
+      "time": "1756932300",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1303933",
+        "name": "Janus Slawomir",
+        "image_id": 0,
+        "cc": null
+      },
+      "o_home": {
+        "id": "815027",
+        "name": "Slawomir Janus",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "677428",
+        "name": "Miroslaw Lewczuk",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "6"
+        },
+        "2": {
+          "home": "11",
+          "away": "7"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "4",
+          "away": "11"
+        },
+        "5": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1780551181"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10600454",
+      "sport_id": "92",
+      "time": "1756886100",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1149105",
+        "name": "Grzegorz Jurowicz",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "681303",
+        "name": "Jakub Nowak",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "12",
+          "away": "14"
+        },
+        "2": {
+          "home": "7",
+          "away": "11"
+        },
+        "3": {
+          "home": "12",
+          "away": "14"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1780258173"
+    }
+  ]
+}
