@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10718120",
+      "sport_id": "92",
+      "time": "1758633000",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "833974",
+        "name": "Tomas Cerveny Jr",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "783169",
+        "name": "Ondrej Knazik",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "9"
+        },
+        "2": {
+          "home": "11",
+          "away": "13"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "5",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81903",
+          "name": "Hall 23-Czech 12",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1779244727"
+    }
+  ]
+}
