@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10232739",
+      "sport_id": "92",
+      "time": "1751823300",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1145992",
+        "name": "Marek Tkocz",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "918072",
+        "name": "Pawel Adamus",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "9"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1766016013"
+    }
+  ]
+}

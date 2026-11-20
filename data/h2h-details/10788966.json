@@ -1,0 +1,36 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10788966",
+      "sport_id": "92",
+      "time": "1768755600",
+      "time_status": "3",
+      "league": {
+        "id": "13296",
+        "name": "Champions League Women",
+        "cc": null
+      },
+      "home": {
+        "id": "1071894",
+        "name": "Politechnika Rzeszow Women",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "390199",
+        "name": "Asd Quattro Mori Cagliari Women",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-0",
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "numberofperiods": "5",
+        "round": "6"
+      },
+      "confirmed_at": "1781169020"
+    }
+  ]
+}
