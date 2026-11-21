@@ -1,0 +1,36 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10917015",
+      "sport_id": "92",
+      "time": "1763294400",
+      "time_status": "3",
+      "league": {
+        "id": "13296",
+        "name": "Champions League Women",
+        "cc": null
+      },
+      "home": {
+        "id": "259329",
+        "name": "Berlin Eastside Women",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "259330",
+        "name": "Linz Ag Froschberg Women",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "numberofperiods": "5",
+        "round": "2"
+      },
+      "confirmed_at": "1776728266"
+    }
+  ]
+}

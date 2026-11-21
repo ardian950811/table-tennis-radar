@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10940397",
+      "sport_id": "92",
+      "time": "1762284000",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "929676",
+        "name": "Kamil Delikatny",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "801425",
+        "name": "Maciej Lamer",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "10",
+          "away": "12"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "12",
+          "away": "14"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1780048850"
+    }
+  ]
+}
