@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10956375",
+      "sport_id": "92",
+      "time": "1762551900",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "698733",
+        "name": "Robert Szymik",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1206236",
+        "name": "Jakub Jesiek",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-2",
+      "scores": {
+        "1": {
+          "home": "3",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "8"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "11",
+          "away": "5"
+        },
+        "5": {
+          "home": "11",
+          "away": "6"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1777527300"
+    }
+  ]
+}
