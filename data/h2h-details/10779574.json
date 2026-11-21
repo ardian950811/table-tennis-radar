@@ -1,0 +1,63 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10779574",
+      "sport_id": "92",
+      "time": "1759650000",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "3270",
+        "name": "Adam Dosz",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "676375",
+        "name": "Marcin Jadczyk",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "8"
+        },
+        "2": {
+          "home": "15",
+          "away": "13"
+        },
+        "3": {
+          "home": "12",
+          "away": "14"
+        },
+        "4": {
+          "home": "11",
+          "away": "6"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69569",
+          "name": "HSC",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "inplay_created_at": "0",
+      "inplay_updated_at": "0",
+      "confirmed_at": "1778659913",
+      "bet365_id": "182440984"
+    }
+  ]
+}
