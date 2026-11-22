@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10973076",
+      "sport_id": "92",
+      "time": "1762868400",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1234874",
+        "name": "Bartosz Sulkowski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "820666",
+        "name": "Milosz Kukawka",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "14",
+          "away": "12"
+        },
+        "2": {
+          "home": "5",
+          "away": "11"
+        },
+        "3": {
+          "home": "13",
+          "away": "11"
+        },
+        "4": {
+          "home": "6",
+          "away": "11"
+        },
+        "5": {
+          "home": "8",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69603",
+          "name": "Poland 1",
+          "city": "Kielce",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1779590082"
+    }
+  ]
+}

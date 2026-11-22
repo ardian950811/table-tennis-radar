@@ -1,0 +1,42 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10978715",
+      "sport_id": "92",
+      "time": "1762954800",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "816731",
+        "name": "Maciej Kolek",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "804365",
+        "name": "Dawid Jadam",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69603",
+          "name": "Poland 1",
+          "city": "Kielce",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1776623259"
+    }
+  ]
+}
