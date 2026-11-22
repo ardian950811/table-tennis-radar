@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10297207",
+      "sport_id": "92",
+      "time": "1752648300",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "815345",
+        "name": "Sebastian Krupa",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1122250",
+        "name": "Piotr Przewlocki",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "4",
+          "away": "11"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "2",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1768019665"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10150848",
+      "sport_id": "92",
+      "time": "1750756800",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1151330",
+        "name": "Gracjan Kesik",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "312241",
+        "name": "Michal Minda",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "8",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "6",
+          "away": "11"
+        },
+        "4": {
+          "home": "6",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82809",
+          "name": "HSC 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1770592033"
+    }
+  ]
+}
