@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10495732",
+      "sport_id": "92",
+      "time": "1755374400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1051287",
+        "name": "Artur Kubiak",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "933688",
+        "name": "Dawid Pyrek",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "6",
+          "away": "11"
+        },
+        "2": {
+          "home": "10",
+          "away": "12"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1769774144"
+    }
+  ]
+}

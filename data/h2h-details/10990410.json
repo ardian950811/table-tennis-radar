@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10990410",
+      "sport_id": "92",
+      "time": "1763164200",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1142552",
+        "name": "Ales Brandtl Jr",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "755083",
+        "name": "Pavel Cibik",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "9",
+          "away": "11"
+        },
+        "2": {
+          "home": "5",
+          "away": "11"
+        },
+        "3": {
+          "home": "3",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "84517",
+          "name": "Hall 15 - Night Czech 1",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": "100",
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1777163681"
+    }
+  ]
+}
