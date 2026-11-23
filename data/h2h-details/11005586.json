@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11005586",
+      "sport_id": "92",
+      "time": "1763456400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1122250",
+        "name": "Piotr Przewlocki",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "823281",
+        "name": "Rafal Idaczyk",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "5",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1779444713"
+    }
+  ]
+}

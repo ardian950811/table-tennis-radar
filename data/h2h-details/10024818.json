@@ -1,0 +1,63 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10024818",
+      "sport_id": "92",
+      "time": "1748580000",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "184829",
+        "name": "Slawomir Dosz",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1597",
+        "name": "Jakub Kosowski",
+        "image_id": 0,
+        "cc": "pl"
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "10",
+          "away": "12"
+        },
+        "2": {
+          "home": "16",
+          "away": "14"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        },
+        "4": {
+          "home": "2",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69569",
+          "name": "HSC",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "inplay_created_at": "0",
+      "inplay_updated_at": "0",
+      "confirmed_at": "1763812164",
+      "bet365_id": "175471799"
+    }
+  ]
+}
