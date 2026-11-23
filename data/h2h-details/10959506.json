@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10959506",
+      "sport_id": "92",
+      "time": "1762610700",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1107118",
+        "name": "Kamil Kos",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "815545",
+        "name": "Michal Szostak",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "4",
+          "away": "11"
+        },
+        "2": {
+          "home": "7",
+          "away": "11"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "75212",
+          "name": "Hall 5 – Poland 4",
+          "city": "Kielce",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1776899237"
+    }
+  ]
+}

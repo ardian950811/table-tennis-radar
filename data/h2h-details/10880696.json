@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10880696",
+      "sport_id": "92",
+      "time": "1761259800",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "380282",
+        "name": "Jan Hendrych",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "718780",
+        "name": "Radek Muller",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "8"
+        },
+        "2": {
+          "home": "11",
+          "away": "2"
+        },
+        "3": {
+          "home": "11",
+          "away": "8"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "84517",
+          "name": "Hall 15 - Night Czech 1",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": "100",
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1777614302"
+    }
+  ]
+}
