@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11082267",
+      "sport_id": "92",
+      "time": "1764841800",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "687691",
+        "name": "Ales Drozd",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "686110",
+        "name": "Adam Strelec",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "8"
+        },
+        "2": {
+          "home": "13",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "5"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81907",
+          "name": "Hall 22 - Czech 11",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795238215"
+    }
+  ]
+}

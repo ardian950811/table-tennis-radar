@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11080526",
+      "sport_id": "92",
+      "time": "1764805800",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "346000",
+        "name": "Martin Filipek",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "380282",
+        "name": "Jan Hendrych",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-2",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "13"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "11",
+          "away": "5"
+        },
+        "4": {
+          "home": "4",
+          "away": "11"
+        },
+        "5": {
+          "home": "11",
+          "away": "9"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "84517",
+          "name": "Hall 15 - Night Czech 1",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": "100",
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795239933"
+    }
+  ]
+}
