@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10891409",
+      "sport_id": "92",
+      "time": "1761462000",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1122250",
+        "name": "Piotr Przewlocki",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1171254",
+        "name": "Michal Paszkiewicz",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "9"
+        },
+        "2": {
+          "home": "0",
+          "away": "11"
+        },
+        "3": {
+          "home": "3",
+          "away": "11"
+        },
+        "4": {
+          "home": "4",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1777505919"
+    }
+  ]
+}

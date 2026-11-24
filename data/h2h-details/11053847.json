@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11053847",
+      "sport_id": "92",
+      "time": "1764317400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1171254",
+        "name": "Michal Paszkiewicz",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "810222",
+        "name": "Krzysztof Schaniel",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "7"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        },
+        "4": {
+          "home": "11",
+          "away": "7"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1778749726"
+    }
+  ]
+}

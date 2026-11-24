@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11061008",
+      "sport_id": "92",
+      "time": "1764445500",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1183159",
+        "name": "Andriej Fomin",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1199124",
+        "name": "Dariusz Maszczynski",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "7"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "4"
+        },
+        "4": {
+          "home": "11",
+          "away": "7"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1781428569"
+    }
+  ]
+}
