@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11107823",
+      "sport_id": "92",
+      "time": "1765313100",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "689037",
+        "name": "Daniel Branny",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "704171",
+        "name": "Tomas Ogrocki",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-2",
+      "scores": {
+        "1": {
+          "home": "5",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "3"
+        },
+        "3": {
+          "home": "11",
+          "away": "8"
+        },
+        "4": {
+          "home": "11",
+          "away": "13"
+        },
+        "5": {
+          "home": "11",
+          "away": "4"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86184",
+          "name": "Hall 54 - H4",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795207259"
+    }
+  ]
+}

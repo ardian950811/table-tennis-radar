@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10794354",
+      "sport_id": "92",
+      "time": "1759830900",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "932976",
+        "name": "Patryk Mecik",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "314228",
+        "name": "Sebastian Szostok",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "9",
+          "away": "11"
+        },
+        "2": {
+          "home": "12",
+          "away": "10"
+        },
+        "3": {
+          "home": "11",
+          "away": "7"
+        },
+        "4": {
+          "home": "7",
+          "away": "11"
+        },
+        "5": {
+          "home": "13",
+          "away": "15"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1778462112"
+    }
+  ]
+}
