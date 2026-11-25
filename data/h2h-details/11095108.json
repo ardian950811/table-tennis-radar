@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11095108",
+      "sport_id": "92",
+      "time": "1765049700",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "683690",
+        "name": "Martin Kucera",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "680901",
+        "name": "Oldrich Stehlik",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "14",
+          "away": "16"
+        },
+        "2": {
+          "home": "5",
+          "away": "11"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86176",
+          "name": "Hall 44 - B4",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795223168"
+    }
+  ]
+}

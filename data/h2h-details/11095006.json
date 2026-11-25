@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11095006",
+      "sport_id": "92",
+      "time": "1765080600",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1122250",
+        "name": "Piotr Przewlocki",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1140286",
+        "name": "Pawel Slosarczyk",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "2"
+        },
+        "2": {
+          "home": "9",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "3"
+        },
+        "4": {
+          "home": "14",
+          "away": "12"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795223768"
+    }
+  ]
+}

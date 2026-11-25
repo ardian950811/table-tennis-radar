@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11105251",
+      "sport_id": "92",
+      "time": "1765284000",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "683468",
+        "name": "Petr Chlad",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "686110",
+        "name": "Adam Strelec",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "6",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "3"
+        },
+        "3": {
+          "home": "11",
+          "away": "8"
+        },
+        "4": {
+          "home": "11",
+          "away": "9"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81903",
+          "name": "Hall 23-Czech 12",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795210116"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11103192",
+      "sport_id": "92",
+      "time": "1765302900",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1042549",
+        "name": "Filip Kujawa",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "698000",
+        "name": "Dawid Kotwica",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "7"
+        },
+        "2": {
+          "home": "11",
+          "away": "7"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        },
+        "4": {
+          "home": "12",
+          "away": "10"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795212585"
+    }
+  ]
+}

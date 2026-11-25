@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11096554",
+      "sport_id": "92",
+      "time": "1765107300",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "683690",
+        "name": "Martin Kucera",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "1123405",
+        "name": "Ondrej Polak",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "12",
+          "away": "10"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "13",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86172",
+          "name": "Hall 42 - B2",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795220785"
+    }
+  ]
+}

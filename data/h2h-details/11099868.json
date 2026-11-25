@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11099868",
+      "sport_id": "92",
+      "time": "1765183500",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "687693",
+        "name": "Kamil Przeczek",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "721339",
+        "name": "Jan Przybyla",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "8",
+          "away": "11"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        },
+        "4": {
+          "home": "2",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86178",
+          "name": "Hall 51 - H1",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795216652"
+    }
+  ]
+}

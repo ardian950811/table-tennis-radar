@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11087875",
+      "sport_id": "92",
+      "time": "1764942900",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "684704",
+        "name": "Michal Macurak",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1024924",
+        "name": "Dominik Pawlik",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "3"
+        },
+        "2": {
+          "home": "11",
+          "away": "5"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        },
+        "4": {
+          "home": "12",
+          "away": "10"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86180",
+          "name": "Hall 52 - H2",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795232985"
+    }
+  ]
+}
