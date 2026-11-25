@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10963351",
+      "sport_id": "92",
+      "time": "1762687200",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "394618",
+        "name": "Christian Kratochvil",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "909920",
+        "name": "Jaroslav Dohnal",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "7"
+        },
+        "2": {
+          "home": "11",
+          "away": "9"
+        },
+        "3": {
+          "home": "6",
+          "away": "11"
+        },
+        "4": {
+          "home": "9",
+          "away": "11"
+        },
+        "5": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81907",
+          "name": "Hall 22 - Czech 11",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1781159728"
+    }
+  ]
+}

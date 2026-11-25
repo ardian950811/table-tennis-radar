@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11113096",
+      "sport_id": "92",
+      "time": "1765415400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "767036",
+        "name": "Maciej Sinicki",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "363288",
+        "name": "Igor Dabrowski",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "13"
+        },
+        "2": {
+          "home": "11",
+          "away": "1"
+        },
+        "3": {
+          "home": "7",
+          "away": "11"
+        },
+        "4": {
+          "home": "2",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795199753"
+    }
+  ]
+}
