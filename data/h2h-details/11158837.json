@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11158837",
+      "sport_id": "92",
+      "time": "1766265300",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "692401",
+        "name": "Karel Zeman",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "691087",
+        "name": "Radomir Benesz",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "7",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "7"
+        },
+        "3": {
+          "home": "11",
+          "away": "5"
+        },
+        "4": {
+          "home": "11",
+          "away": "8"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86184",
+          "name": "Hall 54 - H4",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795644805"
+    }
+  ]
+}
