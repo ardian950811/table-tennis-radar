@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10841237",
+      "sport_id": "92",
+      "time": "1760577000",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1195855",
+        "name": "Adrian Burkacki",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "932581",
+        "name": "Mariusz Baron",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "12",
+          "away": "10"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "7",
+          "away": "11"
+        },
+        "4": {
+          "home": "7",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1778059440"
+    }
+  ]
+}

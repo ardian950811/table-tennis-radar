@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11122590",
+      "sport_id": "92",
+      "time": "1765584300",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "824684",
+        "name": "Krzysztof Juszczyk",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "813475",
+        "name": "Lukasz Oracz",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "13",
+          "away": "11"
+        },
+        "2": {
+          "home": "14",
+          "away": "12"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        },
+        "4": {
+          "home": "11",
+          "away": "6"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "74476",
+          "name": "POC",
+          "city": "Poczesna",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795189707"
+    }
+  ]
+}
