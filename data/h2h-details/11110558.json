@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11110558",
+      "sport_id": "92",
+      "time": "1765362000",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1228518",
+        "name": "David Osvald",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1226293",
+        "name": "Jaroslav Sindler",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "3"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "6"
+        },
+        "4": {
+          "home": "15",
+          "away": "13"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86178",
+          "name": "Hall 51 - H1",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795689876"
+    }
+  ]
+}
