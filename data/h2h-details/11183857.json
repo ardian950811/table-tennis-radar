@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11183857",
+      "sport_id": "92",
+      "time": "1766778300",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "686907",
+        "name": "Jiri Vanous",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "752818",
+        "name": "Patrik Jokiel",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "3-0",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "4"
+        },
+        "2": {
+          "home": "11",
+          "away": "5"
+        },
+        "3": {
+          "home": "11",
+          "away": "4"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86184",
+          "name": "Hall 54 - H4",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795616784"
+    }
+  ]
+}

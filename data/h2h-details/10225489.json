@@ -1,0 +1,41 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10225489",
+      "sport_id": "92",
+      "time": "1751632200",
+      "time_status": "3",
+      "league": {
+        "id": "22742",
+        "name": "Czech Liga Pro",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "348297",
+        "name": "Jiri Pozarsky",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "797186",
+        "name": "Simon Kadavy",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "1-3",
+      "timeline": [],
+      "extra": {
+        "stadium_data": {
+          "id": "78399",
+          "name": "A17 Hall",
+          "city": "Liberec",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1765071354"
+    }
+  ]
+}

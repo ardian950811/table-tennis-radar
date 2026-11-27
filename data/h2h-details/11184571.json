@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11184571",
+      "sport_id": "92",
+      "time": "1766798700",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "677428",
+        "name": "Miroslaw Lewczuk",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "801425",
+        "name": "Maciej Lamer",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "11",
+          "away": "9"
+        },
+        "2": {
+          "home": "2",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "6"
+        },
+        "4": {
+          "home": "11",
+          "away": "3"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795615688"
+    }
+  ]
+}
