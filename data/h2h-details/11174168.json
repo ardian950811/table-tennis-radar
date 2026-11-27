@@ -1,0 +1,56 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11174168",
+      "sport_id": "92",
+      "time": "1766708400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "1042549",
+        "name": "Filip Kujawa",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1012682",
+        "name": "Szymon Brud",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "0-3",
+      "scores": {
+        "1": {
+          "home": "8",
+          "away": "11"
+        },
+        "2": {
+          "home": "9",
+          "away": "11"
+        },
+        "3": {
+          "home": "8",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795628338"
+    }
+  ]
+}

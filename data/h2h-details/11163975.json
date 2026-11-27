@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11163975",
+      "sport_id": "92",
+      "time": "1766385600",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "684704",
+        "name": "Michal Macurak",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1227391",
+        "name": "Erik Precek",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-2",
+      "scores": {
+        "1": {
+          "home": "9",
+          "away": "11"
+        },
+        "2": {
+          "home": "12",
+          "away": "10"
+        },
+        "3": {
+          "home": "11",
+          "away": "13"
+        },
+        "4": {
+          "home": "11",
+          "away": "7"
+        },
+        "5": {
+          "home": "14",
+          "away": "12"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81907",
+          "name": "Hall 22 - Czech 11",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795638817"
+    }
+  ]
+}

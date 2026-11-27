@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11172946",
+      "sport_id": "92",
+      "time": "1766569500",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "382601",
+        "name": "Michal Raska",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1024924",
+        "name": "Dominik Pawlik",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "7",
+          "away": "11"
+        },
+        "2": {
+          "home": "8",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "7"
+        },
+        "4": {
+          "home": "9",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81907",
+          "name": "Hall 22 - Czech 11",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795629782"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11161720",
+      "sport_id": "92",
+      "time": "1766404500",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "678402",
+        "name": "Arkadiusz Mugowski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "774240",
+        "name": "Adrian Eliasz",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "9",
+          "away": "11"
+        },
+        "2": {
+          "home": "5",
+          "away": "11"
+        },
+        "3": {
+          "home": "13",
+          "away": "11"
+        },
+        "4": {
+          "home": "7",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82809",
+          "name": "HSC 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795641817"
+    }
+  ]
+}
