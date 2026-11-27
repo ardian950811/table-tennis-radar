@@ -1,0 +1,64 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "10816603",
+      "sport_id": "92",
+      "time": "1760162700",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "676374",
+        "name": "Piotr Strus",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "676381",
+        "name": "Szymon Skop",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "6",
+          "away": "11"
+        },
+        "2": {
+          "home": "9",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "6"
+        },
+        "4": {
+          "home": "11",
+          "away": "3"
+        },
+        "5": {
+          "home": "7",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1781290305"
+    }
+  ]
+}

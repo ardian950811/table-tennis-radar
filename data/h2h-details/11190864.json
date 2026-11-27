@@ -1,0 +1,42 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11190864",
+      "sport_id": "92",
+      "time": "1765806900",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "688579",
+        "name": "Tomas Fojtik",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "away": {
+        "id": "382601",
+        "name": "Michal Raska",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "2-3",
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "86180",
+          "name": "Hall 52 - H2",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795608652"
+    }
+  ]
+}

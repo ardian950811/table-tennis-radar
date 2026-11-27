@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11071178",
+      "sport_id": "92",
+      "time": "1764644400",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "812390",
+        "name": "Michal Natkaniec",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "677428",
+        "name": "Miroslaw Lewczuk",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "6",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "5"
+        },
+        "3": {
+          "home": "10",
+          "away": "12"
+        },
+        "4": {
+          "home": "8",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "82811",
+          "name": "BLW",
+          "city": "Blachownia",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795727408"
+    }
+  ]
+}

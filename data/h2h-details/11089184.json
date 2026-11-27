@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11089184",
+      "sport_id": "92",
+      "time": "1764968700",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "259453",
+        "name": "Radoslaw Malinowski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "727080",
+        "name": "Piotr Maruszak",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "4",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "7"
+        },
+        "3": {
+          "home": "11",
+          "away": "13"
+        },
+        "4": {
+          "home": "5",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795711185"
+    }
+  ]
+}

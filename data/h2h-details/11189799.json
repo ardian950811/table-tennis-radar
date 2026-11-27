@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11189799",
+      "sport_id": "92",
+      "time": "1766909400",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "1227065",
+        "name": "Ales Cizek",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "687310",
+        "name": "Radek Benes",
+        "image_id": 0,
+        "cc": "cz"
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "7",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "8"
+        },
+        "3": {
+          "home": "9",
+          "away": "11"
+        },
+        "4": {
+          "home": "3",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "81907",
+          "name": "Hall 22 - Czech 11",
+          "city": "Prague",
+          "country": "Czechia",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795609751"
+    }
+  ]
+}
