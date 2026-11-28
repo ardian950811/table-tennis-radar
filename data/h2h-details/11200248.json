@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11200248",
+      "sport_id": "92",
+      "time": "1767126600",
+      "time_status": "3",
+      "league": {
+        "id": "29097",
+        "name": "TT Cup",
+        "cc": "cz"
+      },
+      "home": {
+        "id": "750316",
+        "name": "Damian Bucko",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "1123412",
+        "name": "Bilski Bartosz",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "1-3",
+      "scores": {
+        "1": {
+          "home": "7",
+          "away": "11"
+        },
+        "2": {
+          "home": "11",
+          "away": "4"
+        },
+        "3": {
+          "home": "5",
+          "away": "11"
+        },
+        "4": {
+          "home": "5",
+          "away": "11"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69607",
+          "name": "Poland 3",
+          "city": "Kielce",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795600640"
+    }
+  ]
+}
