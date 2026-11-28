@@ -1,0 +1,60 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "11145389",
+      "sport_id": "92",
+      "time": "1766023200",
+      "time_status": "3",
+      "league": {
+        "id": "29128",
+        "name": "TT Elite Series",
+        "cc": null
+      },
+      "home": {
+        "id": "314232",
+        "name": "Adrian Myszewski",
+        "image_id": 0,
+        "cc": null
+      },
+      "away": {
+        "id": "767036",
+        "name": "Maciej Sinicki",
+        "image_id": 0,
+        "cc": null
+      },
+      "ss": "3-1",
+      "scores": {
+        "1": {
+          "home": "14",
+          "away": "12"
+        },
+        "2": {
+          "home": "9",
+          "away": "11"
+        },
+        "3": {
+          "home": "11",
+          "away": "9"
+        },
+        "4": {
+          "home": "11",
+          "away": "9"
+        }
+      },
+      "timeline": [],
+      "extra": {
+        "bestofsets": "5",
+        "stadium_data": {
+          "id": "69573",
+          "name": "OSP 2",
+          "city": "Czestochowa",
+          "country": "Poland",
+          "capacity": null,
+          "googlecoords": null
+        }
+      },
+      "confirmed_at": "1795657397"
+    }
+  ]
+}
